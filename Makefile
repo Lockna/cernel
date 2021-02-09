@@ -2,9 +2,11 @@ KERNEL_HDD = cernel.hdd
 
 .PHONY: compile clean all toolchain cleanToolchain
 
+image: $(KERNEL_HDD)
+
 all: $(KERNEL_HDD)
 
-run: $(KERNEL_HDD)
+run:
 	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD) -s
 
 $(KERNEL_HDD): compile
@@ -21,7 +23,7 @@ compile:
 	make -C kernel	
 
 clean:
-	rm $(KERNEL_HDD)
+	rm -f $(KERNEL_HDD)
 	make -C kernel clean
 
 toolchain:
