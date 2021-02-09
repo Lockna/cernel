@@ -1,6 +1,6 @@
 [submodule "echfs"]
 	path = echfs
-	url = git@github.com:echfs/echfs.git
+	url = https://github.com/echfs/echfs.git
 [submodule "limine"]
 	path = limine
-	url = git@github.com:limine-bootloader/limine.git
+	url = https://github.com/limine-bootloader/limine.git
