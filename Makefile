@@ -1,13 +1,16 @@
 KERNEL_HDD = cernel.hdd
 
-.PHONY: compile clean all toolchain cleanToolchain
+.PHONY: drun run compile clean all toolchain cleanToolchain
 
 image: $(KERNEL_HDD)
 
 all: $(KERNEL_HDD)
 
 run:
-	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD) -s
+	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD)
+
+drun:
+	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD) -s -S
 
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
