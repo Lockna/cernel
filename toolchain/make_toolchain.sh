@@ -2,6 +2,7 @@
 set -e
 set -x
 
+cd toolchain
 mkdir -p cross
 cd cross
 
