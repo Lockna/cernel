@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale/stivale.h>
+#include <drivers/fb/framebuffer.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -33,15 +34,39 @@ struct stivale_header stivale_hdr = {
 };
 
 // The following will be our kernel's entry point.
-void _start(struct stivale_struct *stivale_struct) {
+void _start(struct stivale_struct *stivale_struct) 
+{
     // Let's get the address of the framebuffer.
-    uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
+    uint8_t *fb_addr = (uint32_t *)stivale_struct->framebuffer_addr;
 
     // Let's try to paint a few pixels white in the top left, so we know
     // that we booted correctly.
-    for (size_t i = 0; i < 128; i++) {
-        fb_addr[i] = 0xff;
-    }
+    // for (size_t i = 0; i < 128; i++) {
+    //     fb_addr[i] = 0xff;
+    // }
+
+    load_fb_driver(fb_addr, 
+                stivale_struct->framebuffer_width, 
+                stivale_struct->framebuffer_height, 
+                stivale_struct->framebuffer_bpp,
+                stivale_struct->framebuffer_pitch);
+    putc('M');
+    putc('a');
+    putc('r');
+    putc('k');
+    putc('u');
+    putc('s');
+    putc(' ');
+    putc('d');
+    putc('u');
+    putc(' ');
+    putc('P');
+    putc('i');
+    putc('s');
+    putc('s');
+    putc('e');
+    putc('r');
+    putc('!');
 
     // We're done, just hang...
     for (;;) {
