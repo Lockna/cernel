@@ -1,7 +1,6 @@
 TARGET := cernel.elf
 
 CC = ../toolchain/cross/bin/x86_64-elf-gcc
-
 CFLAGS = -Wall -Wextra -g -O2 -pipe
 
 LDINTERNALFLAGS := \
@@ -24,16 +23,22 @@ INTERNALCFLAGS  :=       \
 	-mno-red-zone
 
 CFILES := $(shell find ./ -type f -name '*.c')
-OBJ    := $(CFILES:.c=.o)
+OBJ    := $(addprefix ./bin/,$(CFILES:.c=.o))
+OBJDIR := bin
+DIRS := $(sort $(addprefix ./bin/,$(patsubst %/,%,$(dir $(CFILES)))))
 
-.PHONY: all clean
+.PHONY: all dir clean
 
-all: $(TARGET)
+all: dir | $(TARGET)
+
+dir:
+	mkdir -p $(OBJDIR)
+	mkdir -p $(DIRS)
 
 $(TARGET): $(OBJ)
 	$(CC) $(LDINTERNALFLAGS) $(OBJ) -o $@
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
 clean:
