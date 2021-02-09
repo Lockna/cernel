@@ -11,7 +11,7 @@ LDINTERNALFLAGS := \
 	-no-pie
 
 INTERNALCFLAGS  :=       \
-	-I.                  \
+	-I include           \
 	-ffreestanding       \
 	-fno-stack-protector \
 	-fno-pic             \
@@ -37,4 +37,4 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(TARGET) $(OBJ)
+	rm -rf $(TARGET) bin
