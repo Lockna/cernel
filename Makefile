@@ -5,7 +5,7 @@ KERNEL_HDD = cernel.hdd
 all: $(KERNEL_HDD)
 
 run: $(KERNEL_HDD)
-	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD)
+	qemu-system-x86_64 -m 1G -hda $(KERNEL_HDD) -s
 
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
@@ -21,7 +21,8 @@ compile:
 	make -C kernel	
 
 clean:
-	@echo "clean"
+	rm $(KERNEL_HDD)
+	make -C kernel clean
 
 toolchain:
 	make -C limine toolchain
