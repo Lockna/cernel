@@ -1,0 +1,6 @@
+*.hdd
+*.elf
+*.o
+limine/*
+echfs/*
+toolchain/cross/*
