@@ -53,3 +53,13 @@ void putc(char c)
 
 	cursor_loc -= pitch*16;
 }
+
+void puts(char *str) {
+
+	int index = 0;
+
+	while (str[index] != '\0') {
+		putc(str[index++]);
+	}
+
+}

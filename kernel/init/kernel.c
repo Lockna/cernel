@@ -50,23 +50,8 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_height, 
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
-    putc('M');
-    putc('a');
-    putc('r');
-    putc('k');
-    putc('u');
-    putc('s');
-    putc(' ');
-    putc('d');
-    putc('u');
-    putc(' ');
-    putc('P');
-    putc('i');
-    putc('s');
-    putc('s');
-    putc('e');
-    putc('r');
-    putc('!');
+  
+    puts("Never thought it could feel so good to print a sentence");
 
     // We're done, just hang...
     for (;;) {
