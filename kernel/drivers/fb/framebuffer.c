@@ -1,6 +1,6 @@
-#include <drivers/fb/framebuffer.h>
+#include <cernel/drivers/fb/framebuffer.h>
+#include <cernel/drivers/fb/font.h>
 #include <stdint.h>
-#include <drivers/fb/font.h>
 
 uint32_t cursor_loc = 0;
 uint8_t *framebuffer = 0;

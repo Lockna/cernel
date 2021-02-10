@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale/stivale.h>
-#include <drivers/fb/framebuffer.h>
+#include <cernel/drivers/fb/framebuffer.h>
 #include <debug/debug.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
