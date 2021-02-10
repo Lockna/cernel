@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stivale/stivale.h>
 #include <drivers/fb/framebuffer.h>
+#include <debug/debug.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -52,6 +53,9 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_pitch);
   
     puts("Never thought it could feel so good to print a sentence");
+	//dbgln("Writing to Console");	
+	
+	dbgln("Printing to Console...");
 
     // We're done, just hang...
     while(1) {
