@@ -42,18 +42,18 @@ void putc(char c)
 {	
 	int index = 0;
 
-	/*
-	 *	First 32 ascii chars are skipped in the bitmap array
-	 *  calculates the correct index for the char
-	 */
-
 	if (c == '\n') {
+		/// Subtracts the offset from the left edge
+		/// Adds the size of a char, with one line as buffer, so they don't stick together
 		cursor_loc -= cursor_loc % pitch;
 		cursor_loc += pitch * 17;
 		return;
 	}
 
-
+	/*
+	 *	First 32 ascii chars are skipped in the bitmap array
+	 *  calculates the correct index for the char
+	 */
 	if (c != ' ') {
 		index = (c - 32) * 16;
 	}
