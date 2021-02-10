@@ -54,7 +54,7 @@ void _start(struct stivale_struct *stivale_struct)
     puts("Never thought it could feel so good to print a sentence");
 
     // We're done, just hang...
-    for (;;) {
+    while(1) {
         asm ("hlt");
     }
 }
