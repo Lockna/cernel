@@ -46,6 +46,14 @@ void putc(char c)
 	 *	First 32 ascii chars are skipped in the bitmap array
 	 *  calculates the correct index for the char
 	 */
+
+	if (c == '\n') {
+		cursor_loc -= cursor_loc % pitch;
+		cursor_loc += pitch * 17;
+		return;
+	}
+
+
 	if (c != ' ') {
 		index = (c - 32) * 16;
 	}

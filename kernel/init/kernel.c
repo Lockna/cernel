@@ -52,7 +52,7 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
   
-    puts("Never thought it could feel so good to print a sentence");
+    puts("It works\ndoes it?");
 	//dbgln("Writing to Console");	
 	
 	dbgln("Printing to Console...");

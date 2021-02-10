@@ -7,7 +7,7 @@ image: $(KERNEL_HDD)
 all: $(KERNEL_HDD)
 
 run:
-	qemu-system-x86_64 -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw
+	qemu-system-x86_64 -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -no-reboot
 
 drun:
 	qemu-system-x86_64 -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -s -S
