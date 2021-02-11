@@ -3,6 +3,7 @@
 #include <stivale/stivale.h>
 #include <cernel/drivers/fb/framebuffer.h>
 #include <debug/debug.h>
+#include <cernel/init/gdt.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -51,11 +52,16 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_height, 
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
-  
-    puts("It works\ndoes it?");
-	//dbgln("Writing to Console");	
 	
-	dbgln("Printing to Console...");
+	puts("Initializing GDT...\n");
+	gdt_init();
+	puts("Loading GDT...");
+	gdt_load();	
+	puts("Done\n");
+
+	dbgln("Done initializing and loading GDT");
+	
+	puts("Huh... It still seems to work\n");
 
     // We're done, just hang...
     while(1) {
