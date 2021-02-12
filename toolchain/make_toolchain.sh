@@ -11,15 +11,19 @@ TARGET=x86_64-elf
 
 BINUTILSVERSION=2.35.1
 GCCVERSION=10.2.0
+NASMVERSION=2.15.05
 
 export PATH="$PREFIX/bin:$PATH"
 
-# downloading binutils/gcc
+# downloading binutils/gcc/nasm
 if [ ! -f binutils-$BINUTILSVERSION.tar.gz ]; then
     wget https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILSVERSION.tar.gz
 fi
 if [ ! -f gcc-$GCCVERSION.tar.gz ]; then
     wget https://ftp.gnu.org/gnu/gcc/gcc-$GCCVERSION/gcc-$GCCVERSION.tar.gz
+fi
+if [ ! -f nasm-$NASMVERSION.tar.gz ]; then
+    wget https://www.nasm.us/pub/nasm/releasebuilds/$NASMVERSION/nasm-$NASMVERSION.tar.gz
 fi
 
 rm -rf build
@@ -29,6 +33,7 @@ cd build
 # Extracting
 tar -xf ../binutils-$BINUTILSVERSION.tar.gz
 tar -xf ../gcc-$GCCVERSION.tar.gz
+tar -xf ../nasm-$NASMVERSION.tar.gz
 
 # Building binutils
 mkdir build-binutils
@@ -56,4 +61,11 @@ make -j $(nproc) all-gcc
 make -j $(nproc) all-target-libgcc
 make install-gcc
 make install-target-libgcc
+cd ..
+
+mkdir build-nasm
+cd build-nasm
+../nasm-$NASMVERSION/configure --prefix="$PREFIX"
+make -j$(nproc)
+make install -j$(nproc)
 cd ..
