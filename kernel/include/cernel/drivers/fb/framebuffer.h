@@ -5,11 +5,11 @@
 
 /**
  *	@brief Sets the global variables to their corrosponding value
- *	@param fb_adress
- *	@param framebuffer_width
- *	@param framebuffer_height
- *	@param framebuffer_bpp
- *	@param framebuffer_pitch
+ *	@param fb_adress Adress of the framebuffer
+ *	@param framebuffer_width Width of the framebuffer in bytes
+ *	@param framebuffer_height Heigh of the framebuffer in bytes
+ *	@param framebuffer_bpp Bytes per pixel, see how many pixel are needed for one byte
+ *	@param framebuffer_pitch Width of the framebuffer in pixels
  *	@return 0 at success, since nothing is done, that could fail, it just returns 0
  */
 int load_fb_driver(uint64_t *fb_adress, 
