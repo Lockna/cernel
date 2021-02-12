@@ -21,14 +21,12 @@ int load_fb_driver(uint64_t *fb_adress,
 /**
  *	@brief Prints a single character to the pixelframebuffer
  *	@param c char to be printed
- *	@return void
  */
 void putc(char c);
 
 /**
  *	@brief Writes a string to the pixelframebuffer using putc
  *	@param str string to be printed
- *	@return void
  */
 void puts(char *str);
 
