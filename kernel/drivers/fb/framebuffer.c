@@ -2,7 +2,7 @@
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include <lib/print.h>
+#include <cernel/util/print.h>
 
 uint32_t cursor_loc = 0;
 uint8_t *framebuffer = 0;

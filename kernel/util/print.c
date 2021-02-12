@@ -1,4 +1,4 @@
-#include <lib/print.h>
+#include <cernel/util/print.h>
 
 void intern_printf(char *format, va_list *args, void (*putc)(char c))
 {
