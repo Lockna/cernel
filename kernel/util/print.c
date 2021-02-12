@@ -1,4 +1,5 @@
 #include <cernel/util/print.h>
+#include <cernel/drivers/fb/framebuffer.h>
 
 void printf(char *format, ...)
 {
