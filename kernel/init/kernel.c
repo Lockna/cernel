@@ -41,12 +41,6 @@ void _start(struct stivale_struct *stivale_struct)
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint32_t *)stivale_struct->framebuffer_addr;
 
-    // Let's try to paint a few pixels white in the top left, so we know
-    // that we booted correctly.
-    // for (size_t i = 0; i < 128; i++) {
-    //     fb_addr[i] = 0xff;
-    // }
-
     load_fb_driver(fb_addr, 
                 stivale_struct->framebuffer_width, 
                 stivale_struct->framebuffer_height, 
