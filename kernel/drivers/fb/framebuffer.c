@@ -2,7 +2,6 @@
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include <cernel/util/print.h>
 
 uint32_t cursor_loc = 0;
 uint8_t *framebuffer = 0;
@@ -23,16 +22,6 @@ int load_fb_driver(uint64_t *fb_adress,
 	pitch = framebuffer_pitch;
 	bpp = framebuffer_bpp;
 	return 0;
-}
-
-void printf(char *format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	
-	intern_printf(format, &args, putc);
-
-	va_end(args);
 }
 
 void putc(char c) 
