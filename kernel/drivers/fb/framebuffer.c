@@ -25,11 +25,6 @@ int load_fb_driver(uint64_t *fb_adress,
 	return 0;
 }
 
-/**
- *  @brief calls internal_printf
- *  @param format String how the output should look like
- *  @return void
- */
 void printf(char *format, ...)
 {
 	va_list args;
@@ -40,11 +35,6 @@ void printf(char *format, ...)
 	va_end(args);
 }
 
-/**
- *	@brief Prints a single character to the pixelframebuffer
- *	@param c char to be printed
- *	@return void
- */
 void putc(char c) 
 {	
 	int index = 0;

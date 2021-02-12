@@ -57,7 +57,6 @@ void _start(struct stivale_struct *stivale_struct)
 	
 	puts("Huh... It still seems to work\n");
 	
-
 	printf("test writing to fb\n");
 	dbg_printf("test writing to debug log\n");
 

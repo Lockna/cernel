@@ -29,5 +29,11 @@ void putc(char c);
  *	@param str string to be printed
  */
 void puts(char *str);
+
+/**
+ *  @brief calls internal_printf
+ *  @param format String how the output should look like
+ *  @return void
+ */
 void printf(char *format, ...);
 #endif
