@@ -59,9 +59,13 @@ void _start(struct stivale_struct *stivale_struct)
 	gdt_load();	
 	puts("Done\n");
 
-	dbgln("Done initializing and loading GDT");
+	dbgln("Done initializing and loading GDT\n");
 	
 	puts("Huh... It still seems to work\n");
+	
+
+	printf("test writing to fb\n");
+	dbg_printf("test writing to debug log\n");
 
     // We're done, just hang...
     while(1) {

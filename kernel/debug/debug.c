@@ -1,4 +1,16 @@
 #include <debug/debug.h>
+#include <lib/print.h>
+#include <stdarg.h>
+
+void dbg_printf(char *format, ...)
+ {
+     va_list args;
+     va_start(args, format);
+
+     intern_printf(format, &args, dbgc);
+
+     va_end(args);
+}
 
 void dbgln(char *str)
 {

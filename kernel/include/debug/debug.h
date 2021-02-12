@@ -13,3 +13,5 @@ void dbgln(char *str);
 *    @return void
 */
 void dbgc(char c);
+
+void dbg_printf(char *format, ...);

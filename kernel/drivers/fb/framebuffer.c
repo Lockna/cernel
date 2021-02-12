@@ -1,6 +1,8 @@
 #include <cernel/drivers/fb/framebuffer.h>
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
+#include <stdarg.h>
+#include <lib/print.h>
 
 uint32_t cursor_loc = 0;
 uint8_t *framebuffer = 0;
@@ -32,6 +34,20 @@ int load_fb_driver(uint64_t *fb_adress,
 	return 0;
 }
 
+/**
+ *  @brief calls internal_printf
+ *  @param format String how the output should look like
+ *  @return void
+ */
+void printf(char *format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	
+	intern_printf(format, &args, putc);
+
+	va_end(args);
+}
 
 /**
  *	@brief Prints a single character to the pixelframebuffer

@@ -16,5 +16,5 @@ int load_fb_driver(uint64_t *fb_adress,
                 uint16_t framebuffer_pitch);
 void putc(char c);
 void puts(char *str);
-
+void printf(char *format, ...);
 #endif
