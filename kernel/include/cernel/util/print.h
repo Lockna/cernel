@@ -85,7 +85,7 @@ void print_char(char ch, int width, void (*putc_ptr)(char c));
  *  @param width minimal length of the output
  *  @param putc_ptr functionpointer to write each char to
  */
-void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c));
+void print_hex(uint64_t num, int width, int leadingZeros, void (*putc_ptr)(char c));
 
 /**
  52  *  @brief converts a signed integer to ASCII hex string
@@ -93,4 +93,4 @@ void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c
  54  *  @param num the number which should get converted to ASCII hex string
  55  *  @return a pointer to the location where the ASCII hex string is stored
  56  */
-char *num_to_ascii_hex(char *output, int64_t num);
+char *num_to_ascii_hex(char *output, uint64_t num);

@@ -62,7 +62,7 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c))
 				format++;
 				break;
 			case 'x':
-				print_hex(va_arg(args, int64_t), width, 0, putc_ptr);
+				print_hex(va_arg(args, uint64_t), width, 0, putc_ptr);
 				format++;
 				break;
 			case 'p':
@@ -76,7 +76,7 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c))
 
 char hex_to_ascii[] = "0123456789abcdef";
 
-char *num_to_ascii_hex(char *output, int64_t num)
+char *num_to_ascii_hex(char *output, uint64_t num)
 {
 	*output = '\0';
 	
@@ -95,7 +95,7 @@ char *num_to_ascii_hex(char *output, int64_t num)
 	return output;
 }
 
-void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c))
+void print_hex(uint64_t num, int width, int leadingZeros, void (*putc_ptr)(char c))
 {
 	char buffer[17];
 	char *output = num_to_ascii_hex(buffer+16, num);
