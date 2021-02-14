@@ -57,19 +57,6 @@ void _start(struct stivale_struct *stivale_struct)
     idt_init();
 	
 	puts("Huh... It still seems to work\n\n");
-	
-	int asdf = -19491;
-	printf("test |%6d| test %i\n", 1337, (uint64_t)asdf);	
-	uint32_t uint1 = 723047203;
-	uint64_t uint2 = 0xffffffffffff;
-	printf("test %u test %u\n", uint1, uint2);
-	dbg_printf("test %u test %u\n", uint1, uint2);	
-	printf("test |%5s| test\n", "test");	
-	printf("%x test |%7x|\n", uint1, 0x1337);
-	printf("%c %c %c %c\n", 't', 'e', 's', 't');
-	printf("Framebuffer Address: %p\n", fb_addr);
-
-    asm volatile("int $0x0");
 
     // We're done, just hang...
     while(1) {

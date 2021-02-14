@@ -5,6 +5,42 @@
 
 static struct idt_entry idt[256];
 
+char* err_message[] = {
+    "Divide by 0",
+    "Reserved",
+    "Non-maskable Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "Bounds range exceeded",
+    "Invalid Opcode",
+    "Device not available",
+    "Double fault",
+    "Coprocessor segment overrun",
+    "Invalid TSS",
+    "Segment not present",
+    "Stack-segment fault",
+    "General protection fault",
+    "Page fault",
+    "Reserved",
+    "x87 FPU error",
+    "Alignment check",
+    "Machine check",
+    "SIMD Floating Point Exception",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved"
+};
+
 typedef void (*isr_fn_t)(void);
 
 isr_fn_t handlers[256] = {
@@ -76,7 +112,7 @@ void idt_init() {
 void handle_interrupt(struct cpu_state* cpu)
 {
 
-    puts("Interrupt happened");
+    kprintf("%s", err_message[cpu->int_no]);
 
     while(1) {
             // Prozessor anhalten

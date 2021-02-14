@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+/// TODO: Document the structs and the functions in the idt.c file
+
 struct idt_entry {
     uint16_t offset_lo;
     uint16_t selector;
@@ -18,16 +20,21 @@ struct idt_ptr_t {
     uint64_t address;
 } __attribute((packed));
 
-struct cpu_state {
-
+typedef struct cpu_state{
     uint64_t r15, r14, r13, r12, r11, r10, r9, r8, rdi, rsi, rbp, rdx, rcx, rbx, rax;
     uint64_t int_no, err;
     uint64_t rip, cs, rflags;
     uint64_t rsp, ss;
+} __attribute__((packed)) cpu_state_t;
 
-} __attribute((packed));
-
+/**
+ *  @brief Initializes the ivt-table
+ */
 void idt_init();
+
+/**
+ *  @brief Loads the ivt-table to be available for the cpu
+ */
 void idt_load();
 
 extern void isr0(void);
