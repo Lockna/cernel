@@ -5,6 +5,7 @@
 #include <debug/debug.h>
 #include <cernel/init/gdt.h>
 #include <cernel/init/idt.h>
+#include <cernel/util/print.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -54,8 +55,19 @@ void _start(struct stivale_struct *stivale_struct)
 	gdt_load();	
 	puts("Done\n");
     idt_init();
-
-	puts("Huh... It still seems to work\n");
+	
+	puts("Huh... It still seems to work\n\n");
+	
+	int asdf = -19491;
+	printf("test |%6d| test %i\n", 1337, (uint64_t)asdf);	
+	uint32_t uint1 = 723047203;
+	uint64_t uint2 = 0xffffffffffff;
+	printf("test %u test %u\n", uint1, uint2);
+	dbg_printf("test %u test %u\n", uint1, uint2);	
+	printf("test |%5s| test\n", "test");	
+	printf("%x test |%7x|\n", uint1, 0x1337);
+	printf("%c %c %c %c\n", 't', 'e', 's', 't');
+	printf("Framebuffer Address: %p\n", fb_addr);
 
     asm volatile("int $0x0");
 

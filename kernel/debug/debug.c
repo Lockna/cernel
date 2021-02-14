@@ -7,7 +7,7 @@ void dbg_printf(char *format, ...)
      va_list args;
      va_start(args, format);
 
-     intern_printf(format, &args, dbgc);
+     intern_printf(format, args, dbgc);
 
      va_end(args);
 }
