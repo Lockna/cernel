@@ -112,7 +112,17 @@ void idt_init() {
 void handle_interrupt(struct cpu_state* cpu)
 {
 
-    kprintf("%s", err_message[cpu->int_no]);
+    kprintf("\n\n%s\n\n", err_message[cpu->int_no]);
+    kprintf("RIP: %x\n", cpu->rip);
+    kprintf("RSP: %x\n", cpu->rsp);
+    kprintf("RAX: %x\n", cpu->rax);
+    kprintf("RBX: %x\n", cpu->rbx);
+    kprintf("RCX: %x\n", cpu->rcx);
+    kprintf("RDX: %x\n", cpu->rdx);
+    kprintf("RBP: %x\n", cpu->rbp);
+    kprintf("RSI: %x\n", cpu->rsi);
+    kprintf("RDI: %x\n", cpu->rdi);
+    kprintf("R15: %x\n", cpu->r15);
 
     while(1) {
             // Prozessor anhalten

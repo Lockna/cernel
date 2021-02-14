@@ -55,7 +55,9 @@ void _start(struct stivale_struct *stivale_struct)
 	puts("Loading GDT...");
 	gdt_load();	
 	puts("Done\n");
+    puts("Initializing IDT...");
     idt_init();
+    puts("Done\n");
 
     // We're done, just hang...
     while(1) {
