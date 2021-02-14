@@ -2,7 +2,7 @@
 #include <cernel/drivers/fb/framebuffer.h>
 #include <stdint.h>
 
-void printf(char *format, ...)
+void kprintf(char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
