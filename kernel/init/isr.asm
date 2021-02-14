@@ -8,23 +8,19 @@ isr%1:
 	jmp service_interrupt
 %endmacro
 
-%macro ISR_NO_ERR_CODE2 1
-global isr%1
-isr%1:
-	jmp service_interrupt
-%endmacro
-
-%macro ISR_NO_ERR_CODE3 1
-global isr%1
-isr%1:
-	jmp service_interrupt
-%endmacro
-
 %macro ISR_ERR_CODE 1
 global isr%1
 isr%1:
 	push %1
 	jmp service_interrupt
+%endmacro
+
+%macro ISR_FILL 0
+	%assign i 33
+	%rep 256 - 33
+		ISR_NO_ERR_CODE i
+		%assign i i+1
+	%endrep
 %endmacro
 
 ISR_NO_ERR_CODE 0
@@ -59,32 +55,14 @@ ISR_NO_ERR_CODE 28
 ISR_NO_ERR_CODE 29
 ISR_ERR_CODE 30
 ISR_NO_ERR_CODE 31
-ISR_NO_ERR_CODE3 32
-
-%macro ISR_FILL 0
-	%assign i 33
-	%rep 65 - 33
-		ISR_NO_ERR_CODE i
-		%assign i i+1
-	%endrep
-%endmacro
-
-ISR_NO_ERR_CODE2 65
-
-%macro ISR_FILL2 0
-	%assign i 66
-	%rep 256 - 66
-		ISR_NO_ERR_CODE i
-		%assign i i+1
-	%endrep
-%endmacro
+ISR_NO_ERR_CODE 32
 
 ISR_FILL
-ISR_FILL2
 
 extern handle_interrupt
 
 service_interrupt:
+	cli
     push rax
 	push rbx
 	push rcx
@@ -101,25 +79,9 @@ service_interrupt:
 	push r14
 	push r15
 
-	xor rax, rax
-	mov ax, ds
-	push rax
-
-	mov ax, 0x10
-	mov ds, ax
-	mov es, ax
-	;mov ss, ax
-	;mov gs, ax
-
 	mov rdi, rsp
 	call handle_interrupt
-
-	pop rax
-
-	mov ds, ax
-	mov es, ax
-	;mov ss, ax
-	;mov gs, ax
+	mov rsp, rax
 
 	pop r15
 	pop r14
