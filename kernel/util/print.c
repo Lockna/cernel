@@ -2,17 +2,6 @@
 #include <cernel/drivers/fb/framebuffer.h>
 #include <stdint.h>
 
-static int isDigit(char ch);
-static char *uint64_to_ascii_dec(char *output, uint64_t num);
-static void print_uint64(uint64_t num, int width, void (*putc_ptr)(char c));
-static void print_int64(int64_t num, int width, void (*putc_ptr)(char c));
-static char *int64_to_ascii_dec(char *output, int64_t num);
-static int strlen(char *str);
-static void print_string(char *output, int width, void (*putc_ptr)(char c));
-static void print_char(char ch, int width, void (*putc_ptr)(char c));
-static void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c));
-static char *num_to_ascii_hex(char *output, int64_t num);
-
 void printf(char *format, ...)
 {
 	va_list args;
@@ -87,7 +76,7 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c))
 
 char hex_to_ascii[] = "0123456789abcdef";
 
-static char *num_to_ascii_hex(char *output, int64_t num)
+char *num_to_ascii_hex(char *output, int64_t num)
 {
 	*output = '\0';
 	
@@ -106,7 +95,7 @@ static char *num_to_ascii_hex(char *output, int64_t num)
 	return output;
 }
 
-static void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c))
+void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)(char c))
 {
 	char buffer[17];
 	char *output = num_to_ascii_hex(buffer+16, num);
@@ -142,7 +131,7 @@ static void print_hex(int64_t num, int width, int leadingZeros, void (*putc_ptr)
 	}	
 }
 
-static void print_char(char ch, int width, void (*putc_ptr)(char c))
+void print_char(char ch, int width, void (*putc_ptr)(char c))
 {
 	width -= 1;
 
@@ -153,7 +142,7 @@ static void print_char(char ch, int width, void (*putc_ptr)(char c))
 	putc_ptr(ch);
 }
 
-static void print_string(char *output, int width, void (*putc_ptr)(char c))
+void print_string(char *output, int width, void (*putc_ptr)(char c))
 {
 	int length = strlen(output);
 	int diff = width - length;
@@ -168,7 +157,7 @@ static void print_string(char *output, int width, void (*putc_ptr)(char c))
     }
 }
 
-static char *uint64_to_ascii_dec(char *output, uint64_t num)
+char *uint64_to_ascii_dec(char *output, uint64_t num)
 {
 	*output = '\0';
 
@@ -186,7 +175,7 @@ static char *uint64_to_ascii_dec(char *output, uint64_t num)
 	return output;
 }
 
-static void print_uint64(uint64_t num, int width, void (*putc_ptr)(char c))
+void print_uint64(uint64_t num, int width, void (*putc_ptr)(char c))
 {
 	char arr[21];
 	char *output = uint64_to_ascii_dec(arr+20, num);
@@ -206,7 +195,7 @@ static void print_uint64(uint64_t num, int width, void (*putc_ptr)(char c))
 }
 
 
-static char *int64_to_ascii_dec(char *output, int64_t num)
+char *int64_to_ascii_dec(char *output, int64_t num)
 {
 	*output = '\0';
 	int isNegative = 0;
@@ -235,7 +224,7 @@ static char *int64_to_ascii_dec(char *output, int64_t num)
 	return output;
 }
 
-static void print_int64(int64_t num, int width, void (*putc_ptr)(char c))
+void print_int64(int64_t num, int width, void (*putc_ptr)(char c))
 {
 	char arr[21];
 	char *output = int64_to_ascii_dec(arr+20, num);
@@ -254,7 +243,7 @@ static void print_int64(int64_t num, int width, void (*putc_ptr)(char c))
 	}
 }
 
-static int strlen(char *str)
+int strlen(char *str)
 {
 	int ret = 0;
 	
@@ -266,7 +255,7 @@ static int strlen(char *str)
 	return ret;
 }
 
-static int isDigit(char ch)
+int isDigit(char ch)
 {
 	return ch >= '0' && ch <= '9';
 }
