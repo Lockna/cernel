@@ -7,6 +7,8 @@
 #include <cernel/init/idt.h>
 #include <cernel/util/print.h>
 
+extern int kmain();
+
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
 static uint8_t stack[4096];
@@ -49,14 +51,15 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
 	
-	puts("Initializing GDT...\n");
+	puts("Initializing GDT...");
 	gdt_init();
+    puts("Done\n");
 	puts("Loading GDT...");
 	gdt_load();	
 	puts("Done\n");
     idt_init();
 	
-	puts("Huh... It still seems to work\n\n");
+    kmain();
 
     // We're done, just hang...
     while(1) {
