@@ -41,7 +41,7 @@ struct stivale_header stivale_hdr = {
 void _start(struct stivale_struct *stivale_struct) 
 {
     // Let's get the address of the framebuffer.
-    uint8_t *fb_addr = (uint32_t *)stivale_struct->framebuffer_addr;
+    uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
 
     load_fb_driver(fb_addr, 
                 stivale_struct->framebuffer_width, 

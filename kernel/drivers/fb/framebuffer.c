@@ -10,7 +10,7 @@ uint16_t height = 0;
 uint16_t bpp = 0;
 uint16_t pitch = 0;
 
-int load_fb_driver(uint64_t *fb_adress, 
+int load_fb_driver(uint8_t *fb_adress, 
 				uint16_t framebuffer_width,
 				uint16_t framebuffer_height, 
                 uint16_t framebuffer_bpp,

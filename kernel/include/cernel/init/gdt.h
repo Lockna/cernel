@@ -46,9 +46,6 @@ struct GDT {
     struct tss_entry tss; ///< TSS Segment
 } __attribute__((packed));
 
-static struct GDT gdt;
-static struct gdt_ptr gdt_pointer;
-
 /**
  *  @brief Initializes the gdt table with the corrosponding values
  */

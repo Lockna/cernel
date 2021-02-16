@@ -1,5 +1,8 @@
 #include <cernel/init/gdt.h>
 
+struct GDT gdt;
+struct gdt_ptr gdt_pointer;
+
 void gdt_init()
 {
 	gdt.entries[0] = gdt_create_entry(0, 0, 0, 0);
