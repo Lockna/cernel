@@ -1,0 +1,16 @@
+name: Testbuild
+
+on: push
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: echo Starting
+            - run: make toolchain
+            - run: make compile
+            - run: make image
+            - run: ls -lah
+            - run: echo Done
