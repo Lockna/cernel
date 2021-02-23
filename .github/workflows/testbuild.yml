@@ -8,6 +8,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+              with: 
+                submodules: 'true'
             - run: echo Starting
             - run: make toolchain
             - run: make compile
