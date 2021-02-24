@@ -11,6 +11,7 @@ jobs:
               with: 
                 submodules: 'true'
             - run: echo Starting
+            - run: sudo apt install uuid-dev
             - run: make toolchain
             - run: make compile
             - run: make image
