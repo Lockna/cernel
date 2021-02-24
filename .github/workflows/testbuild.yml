@@ -11,7 +11,7 @@ jobs:
               with: 
                 submodules: 'true'
             - run: echo Starting
-            - run: sudo apt install uuid-dev libfuse-dev
+            - run: sudo apt install uuid-dev libfuse-dev libmpfr-dev libmpc-dev libgmp-dev
             - run: make toolchain
             - run: make compile
             - run: make image
