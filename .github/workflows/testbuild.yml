@@ -17,3 +17,7 @@ jobs:
             - run: make image
             - run: ls -lah
             - run: echo Done
+            - uses: actions/upload-artifact@v2
+              with:
+                    name: Cernel Image
+                    path: cernel.hdd
