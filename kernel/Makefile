@@ -22,7 +22,9 @@ INTERNALCFLAGS  :=       \
 	-mno-sse             \
 	-mno-sse2            \
 	-mcmodel=kernel      \
-	-mno-red-zone
+	-mno-red-zone		 \
+	-fno-builtin         \
+	-Wall
 
 CFILES   := $(shell find ./ -type f -name '*.c')
 OBJ    	 := $(addprefix ./bin/,$(CFILES:.c=.o))
