@@ -18,9 +18,9 @@ INTERNALCFLAGS  :=       \
 	-fno-pic             \
 	-mno-80387           \
 	-mno-mmx             \
+	-mno-sse			 \
+	-mno-sse2			 \
 	-mno-3dnow           \
-	-mno-sse             \
-	-mno-sse2            \
 	-mcmodel=kernel      \
 	-mno-red-zone		 \
 	-fno-builtin         \
