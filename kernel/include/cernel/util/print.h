@@ -24,6 +24,14 @@ void kprintf(char *format, ...);
  */
 int isDigit(char ch);
 
+/*
+ * @brief prints a number as binary
+ * @param num the number which gets printed as binary
+ * @param width minimal width of the output
+ * @param putc_ptr functionpointer to write each char to
+ */
+void print_bin(uint64_t num, int width, void(*putc_ptr)(char c));
+
 /**
  *  @brief converts a unsigned integer to ASCII decimal string
  *  @param output a pointer to the location where the string should be written to

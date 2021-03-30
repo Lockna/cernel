@@ -69,8 +69,43 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c))
 				print_hex(va_arg(args, int64_t), width, 1, putc_ptr);
 				format++;
 				break;
+			case 'b':
+				print_bin(va_arg(args, uint64_t), width, putc_ptr);
+				format++;
+				break;
 			} 
 		}
+	}
+}
+
+void print_bin(uint64_t num, int width, void(*putc_ptr)(char c))
+{
+	char arr[65];
+	arr[64] = '\0';
+	char *out = arr + 63;
+
+	if (num == 0) {
+		out--;
+		*out = '0';
+	}
+
+	while (num > 0) {
+		out--;
+		*out = (num % 2) + '0';
+		num /= 2;
+	}
+
+	int length = strlen(out);
+
+	while (length < width) {
+		length++;
+		putc_ptr(' ');
+	}
+
+	
+	while (*out != '\0') {
+        putc_ptr(*out);
+        out++;
 	}
 }
 
