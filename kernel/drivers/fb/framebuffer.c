@@ -2,6 +2,7 @@
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <cernel/util/print.h>
 
 uint32_t cursor_loc = 0;
 uint8_t *framebuffer = 0;
@@ -9,6 +10,8 @@ uint16_t width = 0;
 uint16_t height = 0;
 uint16_t bpp = 0;
 uint16_t pitch = 0;
+uint16_t char_per_line = 0;
+uint16_t char_current_line = 0;
 
 int load_fb_driver(uint8_t *fb_adress, 
 				uint16_t framebuffer_width,
@@ -21,6 +24,8 @@ int load_fb_driver(uint8_t *fb_adress,
 	height = framebuffer_height;
 	pitch = framebuffer_pitch;
 	bpp = framebuffer_bpp;
+	char_per_line = framebuffer_width / 9;
+
 	return 0;
 }
 
@@ -33,7 +38,14 @@ void putc(char c)
 		/// Adds the size of a char, with one line as buffer, so they don't stick together
 		cursor_loc -= cursor_loc % pitch;
 		cursor_loc += pitch * 17;
+		char_current_line = 0;
 		return;
+	}
+
+	if (char_per_line == char_current_line) {
+		char_current_line = 0;
+		cursor_loc -= cursor_loc % pitch;
+		cursor_loc += pitch * 17;
 	}
 
 	/*
@@ -43,6 +55,8 @@ void putc(char c)
 	if (c != ' ') {
 		index = (c - 32) * 16;
 	}
+
+	char_current_line++;		
 
 	for (int i = index; i < (index+16); i++) {
 
