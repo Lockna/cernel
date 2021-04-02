@@ -34,10 +34,10 @@ void putc(char c)
 	int index = 0;
 
 	if (c == '\n') {
-		/// Subtracts the offset from the left edge
+		/// Subtracts the offset from the left edge, so the char is at the beginning of the line
 		/// Adds the size of a char, with one line as buffer, so they don't stick together
 		cursor_loc -= cursor_loc % pitch;
-		cursor_loc += pitch * 17;
+		cursor_loc += pitch * 17; // <-- 16, the "size" of a char + 1 pixelline
 		char_current_line = 0;
 		return;
 	}
@@ -83,7 +83,8 @@ void putc(char c)
 	cursor_loc += bpp;
 	cursor_loc += (bpp/8);
 
-	/// Cursor is in the bottom right corner, so set it to top again, else the next char would be diagonal to the already written one
+	/// Cursor is in the bottom right corner of the bitmap, so set it to top again, 
+	/// else the next char would be in the right down diagonal to the already written one
 	cursor_loc -= pitch*16;
 }
 
