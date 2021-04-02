@@ -50,12 +50,12 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
 	
-	puts("Initializing GDT...");
+	kprintf("Initializing GDT...");
 	gdt_init();
-    puts("Done\n");
-	puts("Loading GDT...");
+    kprintf("Done\n");
+	kprintf("Loading GDT...");
 	gdt_load();	
-	puts("Done\n");
+	kprintf("Done\n");
     idt_init();
 	
 	pmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
