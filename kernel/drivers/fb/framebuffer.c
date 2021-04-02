@@ -5,7 +5,7 @@
 #include <cernel/util/print.h>
 
 uint32_t cursor_loc = 0;
-uint8_t *framebuffer = 0;
+volatile uint8_t *framebuffer = 0;
 uint16_t width = 0;
 uint16_t height = 0;
 uint16_t bpp = 0;
