@@ -5,3 +5,5 @@ limine/*
 limine
 echfs/*
 toolchain/cross/*
+/limine
+/echfs
