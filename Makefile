@@ -30,8 +30,6 @@ clean:
 	make -C kernel clean
 
 toolchain:
-	make -C limine toolchain
-	make -C limine bootloader
 	make -C limine
 	make -C echfs
 	chmod +x toolchain/make_toolchain.sh
