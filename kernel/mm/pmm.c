@@ -200,6 +200,20 @@ void *pmm_alloc()
 	return ret;
 }
 
+// the page returned by pmm_alloc() must be identity mapped
+void *pmm_allocz()
+{
+    void *ret = pmm_alloc();
+
+    if (ret != NULL) {
+		for (uint32_t i = 0; i < PAGE_SIZE / 8; i++) {
+			*(uint64_t *)(ret + i) = 0;
+		}
+	}
+
+    return ret;    
+}
+
 void pmm_free(void *page_addr)
 {
 	uint64_t page_number = address_to_page_number(page_addr);
