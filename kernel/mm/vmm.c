@@ -1,5 +1,6 @@
 #include <cernel/mm/vmm.h>
 #include <stddef.h>
+#include <stdint.h>
 
 void createVirtualAddressIndexer(struct VirtualAddressIndexer *indexer) {
 
@@ -26,13 +27,16 @@ struct PageTable *vmm_create_new_address_space() {
 }
 
 void *cr3_read() {
-	return NULL;
+	void *ret;
+	asm("\t mov %%cr3,%0" : "=r"(ret));
+
+	return ret;
 }
 
-void cr3_set(void *value) {
-
+void cr3_set(uintptr_t value) {
+	asm volatile("mov %0, %%cr3" : : "r"(value));
 }
 
-void tlb_flush() {
-
+void tlb_flush(unsigned long addr) {
+	asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
 }

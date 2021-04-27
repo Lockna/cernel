@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stivale/stivale.h>
+#include <stdint.h>
 
 #define PAGING_LVL 4
 
@@ -40,5 +41,5 @@ void vmm_unmap(struct PageTable *pageTable, void *virt);
 struct PageTable *vmm_create_new_address_space();
 
 void *cr3_read();
-void cr3_set(void *value);
-void tlb_flush();
+void cr3_set(uintptr_t value);
+void tlb_flush(unsigned long addr);
