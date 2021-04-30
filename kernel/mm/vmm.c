@@ -37,12 +37,12 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 
 	if (!pte.present) {
 		pdp = (void *)pmm_allocz();
-		pte.address = (uintptr_t)pdp >> 12;
+		pte.addr = (uintptr_t)pdp >> 12;
 		pte.present = 1;
 		pte.writable = 1;
 		page_table->entries[indexer.page_directory_pointer_index] = pte;
 	} else {
-		pdp = pte.address << 12;
+		pdp = pte.addr << 12;
 	}
 
 	pte = pdp->entries[indexer.page_directory_index];
@@ -50,12 +50,12 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 
 	if (!pte.present) {
 		pd = (void *)pmm_allocz();
-		pte.address = pd >> 12;
+		pte.addr = pd >> 12;
 		pte.present = 1;
 		pte.writable = 1;
 		pdp->entries[indexer.page_directory_index] = pte;
 	} else {
-		pd = pte.address << 12;
+		pd = pte.addr << 12;
 	}
 
 	pte = pd->entries[indexer.page_table_index];
@@ -63,16 +63,16 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 
 	if (!pte.present) {
 		pt = (void *)pmm_allocz();
-		pte.address = pt >> 12;
+		pte.addr = pt >> 12;
 		pte.present = 1;
 		pte.writable = 1;
 		pd->entries[indexer.page_directory_index] = pte;
 	} else {
-		pt = pte.address << 12;
+		pt = pte.addr << 12;
 	}
 
 	pte = pt->entries[indexer.page_index];
-	pte.address = phys_addr >> 12;
+	pte.addr = phys_addr >> 12;
 	pte.present = 1;
 	pte.writable = 1;
 	pt->entries[indexer.page_index] = pte;

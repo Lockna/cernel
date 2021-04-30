@@ -23,7 +23,7 @@ struct PageTableEntry {
 	uint64_t huge_page : 1;
 	uint64_t global : 1;
 	uint64_t custom0 : 3;
-	uint64_t phys_addr : 52;
+	uint64_t addr : 52;
 } __attribute__ ((__packed__));
 
 struct PageTable {
