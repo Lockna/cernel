@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <cernel/drivers/fb/framebuffer.h>
-#include <cernel/util/print.h>
+#include <cernel/lib/print.h>
 
 static struct idt_entry idt[256];
 

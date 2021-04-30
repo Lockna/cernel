@@ -12,6 +12,6 @@ struct usable_ram {
 };
 
 void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count);
-void *pmm_alloc();
-void *pmm_allocz();
-void pmm_free(void * page_addr);
+uintptr_t pmm_alloc();
+uintptr_t pmm_allocz();
+void pmm_free(uintptr_t page_addr);

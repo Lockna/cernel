@@ -1,5 +1,5 @@
 #include <debug/debug.h>
-#include <cernel/util/print.h>
+#include <cernel/lib/print.h>
 #include <stdarg.h>
 
 void dbg_printf(char *format, ...)
