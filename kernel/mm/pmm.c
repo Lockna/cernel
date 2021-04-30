@@ -11,16 +11,16 @@ uint64_t page_count;
 struct stivale_mmap_entry *usable_ram_arr = NULL;
 uint32_t usable_ram_entries;
 
-static void *pageframe_number_to_address(uint64_t pageframe_number)
+static uintptr_t pageframe_number_to_address(uint64_t pageframe_number)
 {
-	void *ret = NULL;
+	uintptr_t ret = 0;
 
 	for (uint32_t i = 0; i < usable_ram_entries; i++) {
 		uint32_t current_page_count = (uint64_t)(usable_ram_arr[i].length) / PAGE_SIZE;
 		
 		if (pageframe_number < current_page_count) {
 			// calculate base address and return it
-			ret = (void *)(usable_ram_arr[i].base + pageframe_number * PAGE_SIZE);
+			ret = (uintptr_t)(usable_ram_arr[i].base + pageframe_number * PAGE_SIZE);
 			break;
 		} else {
 			pageframe_number -= current_page_count;
@@ -30,14 +30,14 @@ static void *pageframe_number_to_address(uint64_t pageframe_number)
 	return ret;
 }
 
-static uint64_t address_to_page_number(void *base)
+static uint64_t address_to_page_number(uintptr_t base)
 {
 	uint64_t ret = 0;
 	
-	for (uint32_t i = 0; i < usable_ram_entries; i++) {
-		if ((uint64_t)base >= usable_ram_arr[i].base 
-		 && (uint64_t)base < usable_ram_arr[i].base + usable_ram_arr[i].length) {
-			ret += ((uint64_t)base - usable_ram_arr[i].base) / PAGE_SIZE;
+	for (size_t i = 0; i < usable_ram_entries; i++) {
+		if (base >= usable_ram_arr[i].base 
+		 && base < usable_ram_arr[i].base + usable_ram_arr[i].length) {
+			ret += (base - usable_ram_arr[i].base) / PAGE_SIZE;
 			break;	
 		} else {
 			ret += usable_ram_arr[i].length / PAGE_SIZE;
@@ -153,9 +153,9 @@ void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count)
 	}
 }
 
-void *pmm_alloc()
+uintptr_t pmm_alloc()
 {
-	void *ret = NULL;
+	uintptr_t ret = 0;
 	uint64_t current_page = 1; // bitmap is on first page
 
 	while (1) {
@@ -200,11 +200,11 @@ void *pmm_alloc()
 }
 
 // the page returned by pmm_alloc() must be identity mapped
-void *pmm_allocz()
+uintptr_t pmm_allocz()
 {
-    void *ret = pmm_alloc();
+    uintptr_t ret = pmm_alloc();
 
-    if (ret != NULL) {
+    if (ret != 0) {
 		for (uint32_t i = 0; i < PAGE_SIZE / 8; i++) {
 			*(uint64_t *)(ret + i) = 0;
 		}
@@ -213,7 +213,7 @@ void *pmm_allocz()
     return ret;    
 }
 
-void pmm_free(void *page_addr)
+void pmm_free(uintptr_t page_addr)
 {
 	uint64_t page_number = address_to_page_number(page_addr);
 	clear_bit(page_number);
