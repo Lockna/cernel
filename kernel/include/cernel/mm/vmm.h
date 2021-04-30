@@ -6,12 +6,10 @@
 #define PAGING_LVL 4
 
 struct AddressIndexer {
-	uint64_t sign_extension : 16;
-	uint64_t lvl4 : 9;
 	uint64_t lvl3 : 9;
 	uint64_t lvl2 : 9;
 	uint64_t lvl1 : 9;
-	uint64_t offset : 12;	
+	uint64_t offset : 12;
 } __attribute__ ((__packed__));
 
 struct PageTableEntry {
@@ -36,7 +34,7 @@ void create_address_indexer(struct AddressIndexer *indexer, , uintptr_t virt_add
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr);
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);
-void vmm_map(struct PageTable *pageTable, uintptr_t virt, uintptr_t phys);
+void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_addr);
 void vmm_unmap(struct PageTable *pageTable, void *virt);
 struct PageTable *vmm_create_new_address_space();
 
