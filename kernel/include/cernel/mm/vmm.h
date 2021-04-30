@@ -32,7 +32,7 @@ struct PageTable {
 	struct PageTableEntry entries[512];
 }__attribute__((aligned(0x1000)));
 
-void createVirtualAddressIndexer(struct VirtualAddressIndexer *indexer);
+void create_address_indexer(struct VirtualAddressIndexer *indexer);
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr);
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);

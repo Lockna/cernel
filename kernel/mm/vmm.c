@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void createVirtualAddressIndexer(struct VirtualAddressIndexer *indexer) {
+void create_address_indexer(struct VirtualAddressIndexer *indexer) {
 
 }
 
