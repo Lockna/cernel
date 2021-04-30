@@ -4,6 +4,13 @@
 
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) {
 
+	indexer->sign_extension = virt_addr >> 48;
+	indexer->lvl4 = virt_addr = virt_addr >> 39 & 0b111111111;
+	indexer->lvl3 = virt_addr = virt_addr >> 30 & 0b111111111;
+	indexer->lvl2 = virt_addr = virt_addr >> 21 & 0b111111111;
+	indexer->lvl1 = virt_addr = virt_addr >> 12 & 0b111111111;
+	indexer->offset = virt_addr = virt_addr & 0b111111111111;
+
 }
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr) {
