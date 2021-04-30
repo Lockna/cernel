@@ -3,8 +3,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) {
-
+void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) 
+{
 	virt_addr >>= 12;
     page_index = virt_addr & 0x1ff;
     virt_addr >>= 9;
@@ -15,20 +15,23 @@ void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr)
     page_directory_pointer_index = virt_addr & 0x1ff;
 }
 
-void *vmm_translate(struct PageTable *pageTable, void *virt_addr) {
+void *vmm_translate(struct PageTable *page_table, void *virt_addr) 
+{
 	return NULL;
 }
 
-void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count) {
+void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count) 
+{
 	// Creating a new page map for the kernel and set cr3 to it
 }
 
-void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_addr) {
+void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr) 
+{
 	struct AddressIndexer indexer;
 	create_address_indexer(&indexer, virt_addr);
 
 	struct PageTableEntry pte;
-	pte = pageTable->entries[indexer.page_directory_pointer_index];
+	pte = page_table->entries[indexer.page_directory_pointer_index];
 
 	struct PageTable *pdp;
 
@@ -37,7 +40,7 @@ void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_ad
 		pte.address = (uintptr_t)pdp >> 12;
 		pte.present = 1;
 		pte.writable = 1;
-		pageTable->entries[indexer.page_directory_pointer_index] = pte;
+		page_table->entries[indexer.page_directory_pointer_index] = pte;
 	} else {
 		pdp = pte.address << 12;
 	}
@@ -76,15 +79,18 @@ void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_ad
 
 }
 
-void vmm_unmap(struct PageTable *pageTable, void *virt) {
+void vmm_unmap(struct PageTable *page_table, void *virt) 
+{
 
 }
 
-struct PageTable *vmm_create_new_address_space() {
+struct PageTable *vmm_create_new_address_space() 
+{
 	return NULL;
 }
 
-void *cr3_read() {
+void *cr3_read() 
+{
 	void *ret;
 	asm("\t mov %%cr3,%0" : "=r"(ret));
 

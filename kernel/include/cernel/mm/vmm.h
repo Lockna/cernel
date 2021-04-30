@@ -32,10 +32,10 @@ struct PageTable {
 
 void create_address_indexer(struct AddressIndexer *indexer, , uintptr_t virt_addr);
 
-void *vmm_translate(struct PageTable *pageTable, void *virt_addr);
+void *vmm_translate(struct PageTable *page_table, void *virt_addr);
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);
-void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_addr);
-void vmm_unmap(struct PageTable *pageTable, void *virt);
+void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr);
+void vmm_unmap(struct PageTable *page_table, void *virt);
 struct PageTable *vmm_create_new_address_space();
 
 void *cr3_read();
