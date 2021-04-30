@@ -36,7 +36,7 @@ void create_address_indexer(struct VirtualAddressIndexer *indexer);
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr);
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);
-void vmm_map(struct PageTable *pageTable, void *virt, void *phys);
+void vmm_map(struct PageTable *pageTable, uintptr_t virt, uintptr_t phys);
 void vmm_unmap(struct PageTable *pageTable, void *virt);
 struct PageTable *vmm_create_new_address_space();
 

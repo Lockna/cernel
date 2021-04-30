@@ -11,10 +11,10 @@ void *vmm_translate(struct PageTable *pageTable, void *virt_addr) {
 }
 
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count) {
-
+	// Creating a new page map for the kernel and set cr3 to it
 }
 
-void vmm_map(struct PageTable *pageTable, void *virt, void *phys) {
+void vmm_map(struct PageTable *pageTable, uintptr_t virt, uintptr_t phys) {
 
 }
 
