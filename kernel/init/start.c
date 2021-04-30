@@ -6,6 +6,7 @@
 #include <cernel/init/gdt.h>
 #include <cernel/init/idt.h>
 #include <cernel/util/print.h>
+#include <cernel/util/memory.h>
 #include <cernel/mm/pmm.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
@@ -64,7 +65,10 @@ void _start(struct stivale_struct *stivale_struct)
 	pmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
 			  							 stivale_struct->memory_map_entries);
     kprintf("Done\n");
- 
+
+    uint64_t memory_size = get_memory_size((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
+			  							 stivale_struct->memory_map_entries);
+
 	while(1) {
         asm ("hlt");
     }
