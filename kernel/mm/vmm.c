@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void create_address_indexer(struct AddressIndexer *indexer) {
+void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) {
 
 }
 
