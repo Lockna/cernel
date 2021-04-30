@@ -6,10 +6,10 @@
 #define PAGING_LVL 4
 
 struct AddressIndexer {
-	uint64_t lvl3 : 9;
-	uint64_t lvl2 : 9;
-	uint64_t lvl1 : 9;
-	uint64_t offset : 12;
+	uint64_t page_directory_pointer_index : 9;
+	uint64_t page_directory_index : 9;
+	uint64_t page_table_index : 9;
+	uint64_t page_index : 9;
 } __attribute__ ((__packed__));
 
 struct PageTableEntry {

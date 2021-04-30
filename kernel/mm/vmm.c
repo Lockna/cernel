@@ -1,16 +1,18 @@
 #include <cernel/mm/vmm.h>
+#include <cernel/mm/pmm.h>
 #include <stddef.h>
 #include <stdint.h>
 
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) {
 
-	indexer->sign_extension = virt_addr >> 48;
-	indexer->lvl4 = virt_addr = virt_addr >> 39 & 0b111111111;
-	indexer->lvl3 = virt_addr = virt_addr >> 30 & 0b111111111;
-	indexer->lvl2 = virt_addr = virt_addr >> 21 & 0b111111111;
-	indexer->lvl1 = virt_addr = virt_addr >> 12 & 0b111111111;
-	indexer->offset = virt_addr = virt_addr & 0b111111111111;
-
+	virt_addr >>= 12;
+    page_index = virt_addr & 0x1ff;
+    virt_addr >>= 9;
+    page_table_index = virt_addr & 0x1ff;
+    virt_addr >>= 9;
+    page_directory_index = virt_addr & 0x1ff;
+    virt_addr >>= 9;
+    page_directory_pointer_index = virt_addr & 0x1ff;
 }
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr) {
@@ -21,7 +23,56 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count) {
 	// Creating a new page map for the kernel and set cr3 to it
 }
 
-void vmm_map(struct PageTable *pageTable, uintptr_t virt, uintptr_t phys) {
+void vmm_map(struct PageTable *pageTable, uintptr_t virt_addr, uintptr_t phys_addr) {
+	struct AddressIndexer indexer;
+	create_address_indexer(&indexer, virt_addr);
+
+	struct PageTableEntry pte;
+	pte = pageTable->entries[indexer.page_directory_pointer_index];
+
+	struct PageTable *pdp;
+
+	if (!pte.present) {
+		pdp = (void *)pmm_allocz();
+		pte.address = (uintptr_t)pdp >> 12;
+		pte.present = 1;
+		pte.writable = 1;
+		pageTable->entries[indexer.page_directory_pointer_index] = pte;
+	} else {
+		pdp = pte.address << 12;
+	}
+
+	pte = pdp->entries[indexer.page_directory_index];
+	struct PageTable *pd;
+
+	if (!pte.present) {
+		pd = (void *)pmm_allocz();
+		pte.address = pd >> 12;
+		pte.present = 1;
+		pte.writable = 1;
+		pdp->entries[indexer.page_directory_index] = pte;
+	} else {
+		pd = pte.address << 12;
+	}
+
+	pte = pd->entries[indexer.page_table_index];
+	struct PageTable *pt;
+
+	if (!pte.present) {
+		pt = (void *)pmm_allocz();
+		pte.address = pt >> 12;
+		pte.present = 1;
+		pte.writable = 1;
+		pd->entries[indexer.page_directory_index] = pte;
+	} else {
+		pt = pte.address << 12;
+	}
+
+	pte = pt->entries[indexer.page_index];
+	pte.address = phys_addr >> 12;
+	pte.present = 1;
+	pte.writable = 1;
+	pt->entries[indexer.page_index] = pte;
 
 }
 
