@@ -5,7 +5,7 @@
 #include <debug/debug.h>
 #include <cernel/init/gdt.h>
 #include <cernel/init/idt.h>
-#include <cernel/util/print.h>
+#include <cernel/lib/print.h>
 #include <cernel/mm/pmm.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.

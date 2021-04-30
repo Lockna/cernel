@@ -1,7 +1,6 @@
 #include <stivale/stivale.h>
 #include <cernel/mm/pmm.h>
 #include <stdint.h>
-#include <cernel/util/print.h>
 #include <stddef.h>
 
 #define USABLE_RAM 1
