@@ -5,7 +5,7 @@
 
 #define PAGING_LVL 4
 
-struct VirtualAddressIndexer {
+struct AddressIndexer {
 	uint64_t sign_extension : 16;
 	uint64_t lvl4 : 9;
 	uint64_t lvl3 : 9;
@@ -32,7 +32,7 @@ struct PageTable {
 	struct PageTableEntry entries[512];
 }__attribute__((aligned(0x1000)));
 
-void create_address_indexer(struct VirtualAddressIndexer *indexer);
+void create_address_indexer(struct AddressIndexer *indexer);
 
 void *vmm_translate(struct PageTable *pageTable, void *virt_addr);
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);
