@@ -6,13 +6,13 @@
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) 
 {
 	virt_addr >>= 12;
-    page_index = virt_addr & 0x1ff;
+    indexer->page_index = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    page_table_index = virt_addr & 0x1ff;
+    indexer->page_table_index = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    page_directory_index = virt_addr & 0x1ff;
+    indexer->page_directory_index = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    page_directory_pointer_index = virt_addr & 0x1ff;
+    indexer->page_directory_pointer_index = virt_addr & 0x1ff;
 }
 
 void *vmm_translate(struct PageTable *page_table, void *virt_addr) 
