@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <cernel/drivers/fb/framebuffer.h>
 #include <cernel/lib/print.h>
+#include <cernel/mm/vmm.h>
 
 static struct idt_entry idt[256];
 
@@ -112,8 +113,9 @@ void idt_init() {
 
 void handle_interrupt(struct cpu_state* cpu)
 {
-
+    
     kprintf("\n\n%s\n\n", err_message[cpu->int_no]);
+    kprintf("error number:%d\n", cpu->err);
     kprintf("RIP: %x\n", cpu->rip);
     kprintf("RSP: %x\n", cpu->rsp);
     kprintf("RAX: %x\n", cpu->rax);
@@ -124,9 +126,13 @@ void handle_interrupt(struct cpu_state* cpu)
     kprintf("RSI: %x\n", cpu->rsi);
     kprintf("RDI: %x\n", cpu->rdi);
     kprintf("R15: %x\n", cpu->r15);
+    kprintf("CR3: %x\n", (uintptr_t)cr3_read());
+    uintptr_t cr2;
+	asm("\t mov %%cr2,%0" : "=r"(cr2));
+    kprintf("CR2: %x", cr2);
 
     while(1) {
             // Prozessor anhalten
             asm volatile("cli; hlt");
-        }
+    }
 }
