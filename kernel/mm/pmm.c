@@ -156,7 +156,8 @@ void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count)
 uintptr_t pmm_alloc()
 {
 	uintptr_t ret = 0;
-	uint64_t current_page = 1; // bitmap is on first page
+	static uint64_t old_page = 1; // bitmap is on first page
+	uint64_t current_page = old_page;
 
 	while (1) {
 		uint64_t *current_base = (uint64_t *)pageframe_number_to_address(current_page);
@@ -186,6 +187,7 @@ uintptr_t pmm_alloc()
 				ret = pageframe_number_to_address(current_page_index);
 
 				if (current_page_index < page_count) {
+					old_page = current_page;
 					return ret;
 				} else {
 					return 0;
@@ -193,10 +195,11 @@ uintptr_t pmm_alloc()
 			}
 		}
 
+		if (current_page == page_count)
+			current_page = 0;
+
 		current_page++;
 	}		
-
-	return ret;
 }
 
 // the page returned by pmm_alloc() must be identity mapped
