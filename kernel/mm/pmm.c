@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <cernel/lib/memory.h>
+#include <cernel/interrupt/panic.h>
+#include <cernel/lib/print.h>
 
 #define USABLE_RAM 1
 
@@ -152,26 +154,29 @@ void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count)
 
 uintptr_t pmm_alloc()
 {
-	uintptr_t ret = 0;
-	static uint64_t old_page = 1; // bitmap is on first page
-	uint64_t current_page = old_page;
+	uint64_t current_page = 1; // bitmap starts on the 2nd page
 
 	while (1) {
 		uint64_t *current_base = (uint64_t *)pageframe_number_to_address(current_page);
 
-		for (uint32_t i = 0; i < PAGE_SIZE / 8; i++) {
+		for (size_t i = 0; i < PAGE_SIZE / 8; i++) {
 			// check if end of bitmap is reached
-			if ((current_page - 1) * PAGE_SIZE * 8 + i * 64 >= page_count)
+			if ((current_page - 1) * PAGE_SIZE * 8 + i * 64 >= page_count) {
+				kprintf("\nOUT OF MEMORY\n");
+				generic_panic();
 				return 0;
+			}
 
+			// check whether there is a bit 0
 			if (current_base[i] != 0xFFFFFFFFFFFFFFFF) {
+				// calculate index of the free bit
+				// one is substracted because the bitmap starts on the page with index 1
 				uint64_t current_page_index = (current_page - 1) * PAGE_SIZE * 8;
 				current_page_index += i * 64;
 
 				// find the bit which is zero
 				// update `current_page_index`
 				// set the bit to one
-
 				for (uint32_t k = 0; k < 64; k++) {
 					uint64_t temp = current_base[i];
 					if ((temp >> k) % 2 == 0) {
@@ -181,19 +186,17 @@ uintptr_t pmm_alloc()
 					}
 				}	
 
-				ret = pageframe_number_to_address(current_page_index);
-
-				if (current_page_index < page_count) {
-					old_page = current_page;
-					return ret;
-				} else {
+				// check if the calculated page index is valid
+				// it might be greater than the max number of pages
+				if (current_page_index >= page_count) {
+					kprintf("\nOUT OF MEMORY\n");
+					generic_panic();
 					return 0;
-				}				
+				}
+
+				return pageframe_number_to_address(current_page_index);
 			}
 		}
-
-		if (current_page == page_count)
-			current_page = 0;
 
 		current_page++;
 	}		
