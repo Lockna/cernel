@@ -80,7 +80,7 @@ void _start(struct stivale_struct *stivale_struct)
     kprintf("%x\n", memory_size);
 
     vmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
-			  							 stivale_struct->memory_map_entries, stivale_struct);
+			  							 stivale_struct->memory_map_entries);
 
     kprintf("vmm_init done\n");
 
