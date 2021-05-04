@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 #define PAGING_LVL 4
+#define KERNEL_PHYS_OFFSET ((uintptr_t)0xFFFFFFFF80000000)
+#define HIGHER_HALF ((uintptr_t)0xFFFF800000000000)
 
 struct AddressIndexer {
 	uint64_t page_directory_pointer_index : 9;
@@ -33,7 +35,7 @@ struct PageTable {
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr);
 
 void *vmm_translate(struct PageTable *page_table, void *virt_addr);
-void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count);
+void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count, struct stivale_struct *stivale_struct);
 void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr);
 void vmm_unmap(struct PageTable *page_table, void *virt);
 struct PageTable *vmm_create_new_address_space();
