@@ -162,8 +162,7 @@ uintptr_t pmm_alloc()
 		for (size_t i = 0; i < PAGE_SIZE / 8; i++) {
 			// check if end of bitmap is reached
 			if ((current_page - 1) * PAGE_SIZE * 8 + i * 64 >= page_count) {
-				kprintf("\nOUT OF MEMORY\n");
-				generic_panic();
+				generic_panic("OUT OF MEMORY");
 			}
 
 			// check whether there is a bit 0
@@ -188,8 +187,7 @@ uintptr_t pmm_alloc()
 				// check if the calculated page index is valid
 				// it might be greater than the max number of pages
 				if (current_page_index >= page_count) {
-					kprintf("\nOUT OF MEMORY\n");
-					generic_panic();
+					generic_panic("OUT OF MEMORY");
 				}
 
 				return pageframe_number_to_address(current_page_index);
