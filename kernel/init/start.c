@@ -8,6 +8,7 @@
 #include <cernel/lib/print.h>
 #include <cernel/lib/memory.h>
 #include <cernel/mm/pmm.h>
+#include <cernel/mm/vmm.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
