@@ -1,7 +1,13 @@
 #include <cernel/mm/vmm.h>
 #include <cernel/mm/pmm.h>
+#include <cernel/lib/print.h>
 #include <stddef.h>
 #include <stdint.h>
+
+struct PageTable *pt_kernel;
+
+size_t pages_allocated = 0;
+size_t page_maped = 0;
 
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) 
 {
@@ -20,9 +26,38 @@ void *vmm_translate(struct PageTable *page_table, void *virt_addr)
 	return NULL;
 }
 
-void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count) 
+void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count, struct stivale_struct *stivale_struct)
 {
-	// Creating a new page map for the kernel and set cr3 to it
+
+        pt_kernel = (struct PageTable *)pmm_allocz();
+
+		kprintf("%x", pt_kernel);
+
+		kprintf("\nBefore the first for loop");
+
+		for (size_t i = 0; i < get_memory_size(mmap, mmap_count); i += PAGE_SIZE) {
+			vmm_map(pt_kernel, i, i);
+		}
+
+		kprintf("\nBetween first and second for loop");
+
+		for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
+            vmm_map(pt_kernel, i + HIGHER_HALF, i);
+        }
+
+		kprintf("\nBetween second and third for loop\n");
+
+        for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
+            vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
+        }
+
+		kprintf("After third for loop\n");
+
+		kprintf("%x\n", pt_kernel);
+
+        cr3_set((uintptr_t)pt_kernel);
+
+		kprintf("%x\n", pt_kernel);
 }
 
 void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr) 
@@ -30,13 +65,21 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	struct AddressIndexer indexer;
 	create_address_indexer(&indexer, virt_addr);
 
+	dbg_printf("\n%u --- virt_addr: %u\n", page_maped, virt_addr);
+	dbg_printf("pdp_i: %u / pd_i: %u / pt_u: %u / p_i: %u", indexer.page_directory_pointer_index, 
+														indexer.page_directory_index,
+														indexer.page_table_index,
+														indexer.page_index);
+
+	
 	struct PageTableEntry pte;
 	pte = page_table->entries[indexer.page_directory_pointer_index];
 
 	struct PageTable *pdp;
 
 	if (!pte.present) {
-		pdp = (void *)pmm_allocz();
+		pdp = (struct PageTable *)pmm_allocz();
+		pages_allocated += 1;
 		pte.addr = (uintptr_t)pdp >> 12;
 		pte.present = 1;
 		pte.writable = 1;
@@ -49,7 +92,8 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	struct PageTable *pd;
 
 	if (!pte.present) {
-		pd = (void *)pmm_allocz();
+		pd = (struct PageTable *)pmm_allocz();
+		pages_allocated += 1;
 		pte.addr = (uintptr_t)pd >> 12;
 		pte.present = 1;
 		pte.writable = 1;
@@ -62,7 +106,8 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	struct PageTable *pt;
 
 	if (!pte.present) {
-		pt = (void *)pmm_allocz();
+		pt = (struct PageTable *)pmm_allocz();
+		pages_allocated += 1;
 		pte.addr = (uintptr_t)pt >> 12;
 		pte.present = 1;
 		pte.writable = 1;
@@ -72,11 +117,10 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	}
 
 	pte = pt->entries[indexer.page_index];
-	pte.addr = (uint64_t)phys_addr >> 12;
+	pte.addr = (uint64_t)phys_addr;
 	pte.present = 1;
 	pte.writable = 1;
 	pt->entries[indexer.page_index] = pte;
-
 }
 
 void vmm_unmap(struct PageTable *page_table, void *virt) 
@@ -98,7 +142,7 @@ void *cr3_read()
 }
 
 void cr3_set(uintptr_t value) {
-	asm volatile("mov %0, %%cr3" : : "r"(value));
+	asm ("mov %0, %%cr3" : : "r" (value));
 }
 
 void tlb_flush(unsigned long addr) {
