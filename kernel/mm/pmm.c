@@ -164,7 +164,6 @@ uintptr_t pmm_alloc()
 			if ((current_page - 1) * PAGE_SIZE * 8 + i * 64 >= page_count) {
 				kprintf("\nOUT OF MEMORY\n");
 				generic_panic();
-				return 0;
 			}
 
 			// check whether there is a bit 0
@@ -191,7 +190,6 @@ uintptr_t pmm_alloc()
 				if (current_page_index >= page_count) {
 					kprintf("\nOUT OF MEMORY\n");
 					generic_panic();
-					return 0;
 				}
 
 				return pageframe_number_to_address(current_page_index);
