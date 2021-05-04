@@ -12,7 +12,7 @@
  *	@param framebuffer_pitch Width of the framebuffer in pixels
  *	@return 0 at success, since nothing is done, that could fail, it just returns 0
  */
-int load_fb_driver(uint8_t *fb_adress, 
+uint8_t load_fb_driver(uint8_t *fb_adress, 
                 uint16_t framebuffer_width,
                 uint16_t framebuffer_height, 
                 uint16_t framebuffer_bpp,

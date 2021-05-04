@@ -13,7 +13,7 @@ uint16_t pitch = 0;
 uint16_t char_per_line = 0;
 uint16_t char_current_line = 0;
 
-int load_fb_driver(uint8_t *fb_adress, 
+uint8_t load_fb_driver(uint8_t *fb_adress, 
 				uint16_t framebuffer_width,
 				uint16_t framebuffer_height, 
                 uint16_t framebuffer_bpp,
@@ -31,7 +31,7 @@ int load_fb_driver(uint8_t *fb_adress,
 
 void putc(char c) 
 {	
-	int index = 0;
+	uint16_t index = 0;
 
 	if (c == '\n') {
 		/// Subtracts the offset from the left edge, so the char is at the beginning of the line
@@ -58,12 +58,12 @@ void putc(char c)
 
 	char_current_line++;		
 
-	for (int i = index; i < (index+16); i++) {
+	for (uint16_t i = index; i < (index+16); i++) {
 
 		/// Gets the n-th line of the bitmap
 		char bitmap = font_bitmap[i];
 
-		for (int j = 0; j < 8; j++) {
+		for (uint8_t j = 0; j < 8; j++) {
 
 			/// Iterate through the single bits of the n-th bitmap line
 			if (bitmap & (1 << (7-j))) {
@@ -90,7 +90,7 @@ void putc(char c)
 
 void puts(char *str) {
 
-	int index = 0;
+	uint32_t index = 0;
 
 	while (str[index] != '\0') {
 		putc(str[index++]);
