@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <cernel/lib/print.h>
 
-uint32_t cursor_loc = 0;
+uint64_t cursor_loc = 0;
 volatile uint8_t *framebuffer = 0;
 uint16_t width = 0;
 uint16_t height = 0;
