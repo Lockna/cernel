@@ -1,6 +1,8 @@
 #include <cernel/mm/vmm.h>
 #include <cernel/mm/pmm.h>
 #include <cernel/lib/print.h>
+#include <cernel/lib/memory.h>
+#include <debug/debug.h>
 #include <stddef.h>
 #include <stdint.h>
 
