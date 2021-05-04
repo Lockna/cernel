@@ -50,7 +50,14 @@ void _start(struct stivale_struct *stivale_struct)
                 stivale_struct->framebuffer_height, 
                 stivale_struct->framebuffer_bpp,
                 stivale_struct->framebuffer_pitch);
-	
+
+    kprintf("fb_width: %u\nfb_height: %u\nfb_bpp: %u\nfb_pitch: %u\n", stivale_struct->framebuffer_width,
+                                                                        stivale_struct->framebuffer_height,
+                                                                        stivale_struct->framebuffer_bpp,
+                                                                        stivale_struct->framebuffer_pitch);
+                
+    kprintf("fb_addr: %x\n", fb_addr);
+
 	kprintf("Initializing GDT...");
 	gdt_init();
     kprintf("Done\n");
@@ -68,6 +75,13 @@ void _start(struct stivale_struct *stivale_struct)
 
     uint64_t memory_size = get_memory_size((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
 			  							 stivale_struct->memory_map_entries);
+
+    kprintf("%x\n", memory_size);
+
+    vmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
+			  							 stivale_struct->memory_map_entries, stivale_struct);
+
+    kprintf("vmm_init done\n");
 
 	while(1) {
         asm ("hlt");
