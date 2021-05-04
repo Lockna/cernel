@@ -28,7 +28,7 @@ void *vmm_translate(struct PageTable *page_table, void *virt_addr)
 	return NULL;
 }
 
-void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count, struct stivale_struct *stivale_struct)
+void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 {
 
         pt_kernel = (struct PageTable *)pmm_allocz();
@@ -37,9 +37,14 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count, struct stiva
 
 		kprintf("\nBefore the first for loop");
 
+		int a = 0;
+
 		for (size_t i = 0; i < get_memory_size(mmap, mmap_count); i += PAGE_SIZE) {
 			vmm_map(pt_kernel, i, i);
+			a++;
 		}
+
+		kprintf("\n%u", a);
 
 		kprintf("\nBetween first and second for loop");
 
@@ -67,11 +72,11 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	struct AddressIndexer indexer;
 	create_address_indexer(&indexer, virt_addr);
 
-	dbg_printf("\n%u --- virt_addr: %u\n", page_maped, virt_addr);
-	dbg_printf("pdp_i: %u / pd_i: %u / pt_u: %u / p_i: %u", indexer.page_directory_pointer_index, 
-														indexer.page_directory_index,
-														indexer.page_table_index,
-														indexer.page_index);
+	// dbg_printf("\n%u --- virt_addr: %u\n", page_maped, virt_addr);
+	// dbg_printf("pdp_i: %u / pd_i: %u / pt_u: %u / p_i: %u", indexer.page_directory_pointer_index, 
+	// 													indexer.page_directory_index,
+	// 													indexer.page_table_index,
+	// 													indexer.page_index);
 
 	
 	struct PageTableEntry pte;
