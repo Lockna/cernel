@@ -48,5 +48,5 @@ void handle_interrupt(interrupt_context_t *irq_context)
     kprintf("RIP: %x\n", irq_context->rip);
     kprintf("RSP: %x\n", irq_context->rsp);
 
-    panic(&irq_context->regs);
+    panic(&irq_context->regs, "");
 }

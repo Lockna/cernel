@@ -40,9 +40,9 @@ void dump_register_state(cpu_register_state_t *state) {
 }
 
 __attribute__((noreturn)) 
-void panic(cpu_register_state_t *state) {
+void panic(cpu_register_state_t *state, char *error_message) {
 
-    kprintf("\n\n                   KERNEL PANIC\n");
+    kprintf("\n\nKERNEL PANIC - %s\n", error_message);
     kprintf("RAX: %x\n", state->rax);
     kprintf("RBX: %x\n", state->rbx);
     kprintf("RCX: %x\n", state->rcx);
@@ -63,9 +63,9 @@ void panic(cpu_register_state_t *state) {
 }
 
 __attribute__((noreturn))
-void generic_panic(void) {
+void generic_panic(char *error_message) {
     cpu_register_state_t regs;
     dump_register_state(&regs);
 
-    panic(&regs);
+    panic(&regs, error_message);
 }
