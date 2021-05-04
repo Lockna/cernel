@@ -9,6 +9,7 @@
 #include <cernel/lib/memory.h>
 #include <cernel/mm/pmm.h>
 #include <cernel/mm/vmm.h>
+#include <cernel/interrupt/panic.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -70,6 +71,7 @@ void _start(struct stivale_struct *stivale_struct)
     kprintf("Finished initializing and loading the idt\n");
 	
     kprintf("Initializing the physical memory allocator...");
+    
 	pmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
 			  							 stivale_struct->memory_map_entries);
     kprintf("Done\n");

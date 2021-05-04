@@ -1,58 +1,56 @@
 #include <cernel/interrupt/panic.h>
+#include <cernel/interrupt/handler.h>
 #include <cernel/lib/print.h>
 #include <cernel/mm/vmm.h>
 
-char* err_message[] = {
-    "Divide by 0",
-    "Reserved",
-    "Non-maskable Interrupt",
-    "Breakpoint",
-    "Overflow",
-    "Bounds range exceeded",
-    "Invalid Opcode",
-    "Device not available",
-    "Double fault",
-    "Coprocessor segment overrun",
-    "Invalid TSS",
-    "Segment not present",
-    "Stack-segment fault",
-    "General protection fault",
-    "Page fault",
-    "Reserved",
-    "x87 FPU error",
-    "Alignment check",
-    "Machine check",
-    "SIMD Floating Point Exception",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved"
-};
+void dump_register_state(cpu_register_state_t *state) {
+  asm (
+    "movq %%r15, %[r15];"
+    "movq %%r14, %[r14];"
+    "movq %%r13, %[r13];"
+    "movq %%r12, %[r12];"
+    "movq %%r11, %[r11];"
+    "movq %%r10, %[r10];"
+    "movq %%r9, %[r9];"
+    "movq %%r8, %[r8];"
+    "movq %%rdi, %[rdi];"
+    "movq %%rsi, %[rsi];"
+    "movq %%rbp, %[rbp];"
+    "movq %%rdx, %[rdx];"
+    "movq %%rcx, %[rcx];"
+    "movq %%rbx, %[rbx];"
+    "movq %%rax, %[rax];"
+    :
+    [r15] "=m" (state->r15), 
+    [r14] "=m" (state->r14),
+    [r13] "=m" (state->r13),
+    [r12] "=m" (state->r12),
+    [r11] "=m" (state->r11),
+    [r10] "=m" (state->r10),
+    [r9] "=m" (state->r9),
+    [r8] "=m" (state->r8),
+    [rdi] "=m" (state->rdi),
+    [rsi] "=m" (state->rsi),
+    [rbp] "=m" (state->rbp),
+    [rdx] "=m" (state->rdx),
+    [rcx] "=m" (state->rcx),
+    [rbx] "=m" (state->rbx),
+    [rax] "=m" (state->rax)
+  );
+}
 
 __attribute__((noreturn)) 
-void panic(struct cpu_state *cpu) {
+void panic(cpu_register_state_t *state) {
 
-    kprintf("\n\n%s\n\n", err_message[cpu->int_no]);
-    kprintf("error number:%d\n", cpu->err);
-    kprintf("RIP: %x\n", cpu->rip);
-    kprintf("RSP: %x\n", cpu->rsp);
-    kprintf("RAX: %x\n", cpu->rax);
-    kprintf("RBX: %x\n", cpu->rbx);
-    kprintf("RCX: %x\n", cpu->rcx);
-    kprintf("RDX: %x\n", cpu->rdx);
-    kprintf("RBP: %x\n", cpu->rbp);
-    kprintf("RSI: %x\n", cpu->rsi);
-    kprintf("RDI: %x\n", cpu->rdi);
-    kprintf("R15: %x\n", cpu->r15);
+    kprintf("\n\n                   KERNEL PANIC\n");
+    kprintf("RAX: %x\n", state->rax);
+    kprintf("RBX: %x\n", state->rbx);
+    kprintf("RCX: %x\n", state->rcx);
+    kprintf("RDX: %x\n", state->rdx);
+    kprintf("RBP: %x\n", state->rbp);
+    kprintf("RSI: %x\n", state->rsi);
+    kprintf("RDI: %x\n", state->rdi);
+    kprintf("R15: %x\n", state->r15);
     kprintf("CR3: %x\n", (uintptr_t)cr3_read());
     uintptr_t cr2;
 	asm("\t mov %%cr2,%0" : "=r"(cr2));
@@ -62,4 +60,12 @@ void panic(struct cpu_state *cpu) {
         // Halt the CPU
         asm volatile("cli; hlt");
     }
+}
+
+__attribute__((noreturn))
+void generic_panic(void) {
+    cpu_register_state_t regs;
+    dump_register_state(&regs);
+
+    panic(&regs);
 }
