@@ -1,6 +1,7 @@
 #include <cernel/interrupt/handler.h>
 #include <cernel/init/idt.h>
 #include <cernel/interrupt/panic.h>
+#include <cernel/lib/print.h>
 
 char* err_message[] = {
     "Divide by 0",
