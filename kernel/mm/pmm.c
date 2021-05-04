@@ -2,6 +2,7 @@
 #include <cernel/mm/pmm.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <cernel/lib/memory.h>
 
 #define USABLE_RAM 1
 
@@ -129,9 +130,7 @@ void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count)
 		// zero out page
 		uint64_t *base = (uint64_t *)pageframe_number_to_address(current_page);
 
-		for (int i = 0; i < PAGE_SIZE / 8; i++) {
-			base[i] = 0;
-		}
+		memset64(base, 0, PAGE_SIZE / 8);
 
 		current_page++;	
 	}
@@ -140,9 +139,7 @@ void pmm_init(struct stivale_mmap_entry *memory_map_addr, uint32_t count)
 		// zero out page
 		uint64_t *base = (uint64_t *)pageframe_number_to_address(current_page);
 		
-		for (int i = 0; i < PAGE_SIZE / 8; i++) {
-            base[i] = 0;
-        }		
+		memset64(base, 0, PAGE_SIZE / 8);
 
 		current_page++;
 	}
@@ -205,15 +202,7 @@ uintptr_t pmm_alloc()
 // the page returned by pmm_alloc() must be identity mapped
 uintptr_t pmm_allocz()
 {
-    uintptr_t ret = pmm_alloc();
-
-    if (ret != 0) {
-		for (uint32_t i = 0; i < PAGE_SIZE / 8; i++) {
-			*(uint64_t *)(ret + i) = 0;
-		}
-	}
-
-    return ret;    
+    return (uintptr_t)memset64((uint64_t *)pmm_alloc(), 0, PAGE_SIZE / 8);    
 }
 
 void pmm_free(uintptr_t page_addr)
