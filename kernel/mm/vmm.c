@@ -73,7 +73,7 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 		}
 	}
 
-	for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
+	for (size_t i = 0; i < 0x100000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + HIGHER_HALF, i);
 
 		//dbg_printf("%x -> %x\n", i + HIGHER_HALF, 
@@ -81,7 +81,7 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 	}
 
 
-	for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
+	for (size_t i = 0; i < 0x80000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
 		
 		//dbg_printf("%x -> %x\n", i + KERNEL_PHYS_OFFSET, 
