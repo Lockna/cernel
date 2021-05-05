@@ -8,20 +8,17 @@
 
 struct PageTable *pt_kernel;
 
-size_t pages_allocated = 0;
-size_t page_maped = 0;
-
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) 
 {
 	indexer->offset = virt_addr & 0xfff;
 	virt_addr >>= 12;
-    indexer->page_index = virt_addr & 0x1ff;
+    indexer->pml1 = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    indexer->page_table_index = virt_addr & 0x1ff;
+    indexer->pml2 = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    indexer->page_directory_index = virt_addr & 0x1ff;
+    indexer->pml3 = virt_addr & 0x1ff;
     virt_addr >>= 9;
-    indexer->page_directory_pointer_index = virt_addr & 0x1ff;
+    indexer->pml4 = virt_addr & 0x1ff;
 }
 
 uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr) 
@@ -31,29 +28,29 @@ uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr)
 
 	struct PageTable *pt = (struct PageTable *)page_table;
 
-	if (!pt->entries[indexer.page_directory_pointer_index].present) {
+	if (!pt->entries[indexer.pml4].present) {
 		return 0;
 	}
 
-	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_directory_pointer_index].addr << 12);
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml4].addr << 12);
 
-	if (!pt->entries[indexer.page_directory_index].present) {
+	if (!pt->entries[indexer.pml3].present) {
 		return 0;
 	}
 
-	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_directory_index].addr << 12);
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml3].addr << 12);
 
-	if (!pt->entries[indexer.page_table_index].present) {
+	if (!pt->entries[indexer.pml2].present) {
 		return 0;
 	}
 
-	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_table_index].addr << 12);
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml2].addr << 12);
 
-	if (!pt->entries[indexer.page_index].present) {
+	if (!pt->entries[indexer.pml1].present) {
 		return 0;
 	}
 
-	return pt->entries[indexer.page_index].addr + indexer.offset;
+	return pt->entries[indexer.pml1].addr + indexer.offset;
 }
 
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
@@ -99,54 +96,51 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	create_address_indexer(&indexer, virt_addr);
 
 	struct PageTableEntry pte;
-	pte = page_table->entries[indexer.page_directory_pointer_index];
+	pte = page_table->entries[indexer.pml4];
 
 	struct PageTable *pdp;
 
 	if (!pte.present) {
 		pdp = (struct PageTable *)pmm_allocz();
-		pages_allocated += 1;
 		pte.addr = (uintptr_t)pdp >> 12;
 		pte.present = 1;
 		pte.writable = 1;
-		page_table->entries[indexer.page_directory_pointer_index] = pte;
+		page_table->entries[indexer.pml4] = pte;
 	} else {
 		pdp = (struct PageTable *)((uintptr_t)pte.addr << 12);
 	}
 
-	pte = pdp->entries[indexer.page_directory_index];
+	pte = pdp->entries[indexer.pml3];
 	struct PageTable *pd;
 
 	if (!pte.present) {
 		pd = (struct PageTable *)pmm_allocz();
-		pages_allocated += 1;
 		pte.addr = (uintptr_t)pd >> 12;
 		pte.present = 1;
 		pte.writable = 1;
-		pdp->entries[indexer.page_directory_index] = pte;
+		pdp->entries[indexer.pml3] = pte;
 	} else {
 		pd = (struct PageTable *)((uintptr_t)pte.addr << 12);
 	}
 
-	pte = pd->entries[indexer.page_table_index];
+	pte = pd->entries[indexer.pml2];
 	struct PageTable *pt;
 
 	if (!pte.present) {
 		pt = (struct PageTable *)pmm_allocz();
-		pages_allocated += 1;
 		pte.addr = (uintptr_t)pt >> 12;
 		pte.present = 1;
 		pte.writable = 1;
-		pd->entries[indexer.page_table_index] = pte;
+		pd->entries[indexer.pml2] = pte;
 	} else {
 		pt = (struct PageTable *)((uintptr_t)pte.addr << 12);
 	}
 
-	pte = pt->entries[indexer.page_index];
+	pte = pt->entries[indexer.pml1];
 	pte.addr = (uint64_t)phys_addr;
 	pte.present = 1;
 	pte.writable = 1;
-	pt->entries[indexer.page_index] = pte;
+	pt->entries[indexer.pml1] = pte;
 }
 
 void vmm_unmap(struct PageTable *page_table, void *virt) 

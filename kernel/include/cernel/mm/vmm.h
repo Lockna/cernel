@@ -8,10 +8,10 @@
 #define HIGHER_HALF ((uintptr_t)0xFFFF800000000000)
 
 struct AddressIndexer {
-	uint64_t page_directory_pointer_index : 9;
-	uint64_t page_directory_index : 9;
-	uint64_t page_table_index : 9;
-	uint64_t page_index : 9;
+	uint64_t pml4 : 9;
+	uint64_t pml3 : 9;
+	uint64_t pml2 : 9;
+	uint64_t pml1 : 9;
 	uint64_t offset : 12;
 } __attribute__ ((__packed__));
 
