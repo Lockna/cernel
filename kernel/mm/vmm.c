@@ -30,41 +30,40 @@ void *vmm_translate(struct PageTable *page_table, void *virt_addr)
 
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 {
+	pt_kernel = (struct PageTable *)pmm_allocz();
 
-        pt_kernel = (struct PageTable *)pmm_allocz();
+	kprintf("%x", pt_kernel);
 
-		kprintf("%x", pt_kernel);
+	kprintf("\nBefore the first for loop");
 
-		kprintf("\nBefore the first for loop");
+	int a = 0;
 
-		int a = 0;
+	for (size_t i = 0; i < get_memory_size(mmap, mmap_count); i += PAGE_SIZE) {
+		vmm_map(pt_kernel, i, i);
+		a++;
+	}
 
-		for (size_t i = 0; i < get_memory_size(mmap, mmap_count); i += PAGE_SIZE) {
-			vmm_map(pt_kernel, i, i);
-			a++;
-		}
+	kprintf("\n%u", a);
 
-		kprintf("\n%u", a);
+	kprintf("\nBetween first and second for loop");
 
-		kprintf("\nBetween first and second for loop");
+	for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
+		vmm_map(pt_kernel, i + HIGHER_HALF, i);
+	}
 
-		for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
-            vmm_map(pt_kernel, i + HIGHER_HALF, i);
-        }
+	kprintf("\nBetween second and third for loop\n");
 
-		kprintf("\nBetween second and third for loop\n");
+	for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
+		vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
+	}
 
-        for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
-            vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
-        }
+	kprintf("After third for loop\n");
 
-		kprintf("After third for loop\n");
+	kprintf("%x\n", pt_kernel);
 
-		kprintf("%x\n", pt_kernel);
+	cr3_set((uintptr_t)pt_kernel);
 
-        cr3_set((uintptr_t)pt_kernel);
-
-		kprintf("%x\n", pt_kernel);
+	kprintf("%x\n", pt_kernel);
 }
 
 void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr) 
