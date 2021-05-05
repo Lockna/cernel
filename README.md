@@ -50,7 +50,7 @@ gdb> break * _start
 ```
 
 ## Contact
-Feel free to reach out to `Lockna#0002` or `mp#2453` on Discord
+Feel free to reach out to `Lockna#5599` or `mp#2453` on Discord
 
 ## Contributing
 Contributions to code and documentation are heavily appreciated, may it be a bug fix or a improvent of the existing code or code documentation.
