@@ -13,6 +13,7 @@ size_t page_maped = 0;
 
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr) 
 {
+	indexer->offset = virt_addr & 0xfff;
 	virt_addr >>= 12;
     indexer->page_index = virt_addr & 0x1ff;
     virt_addr >>= 9;
@@ -23,9 +24,36 @@ void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr)
     indexer->page_directory_pointer_index = virt_addr & 0x1ff;
 }
 
-void *vmm_translate(struct PageTable *page_table, void *virt_addr) 
+uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr) 
 {
-	return NULL;
+	struct AddressIndexer indexer;
+	create_address_indexer(&indexer, virt_addr);
+
+	struct PageTable *pt = (struct PageTable *)page_table;
+
+	if (!pt->entries[indexer.page_directory_pointer_index].present) {
+		return 0;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_directory_pointer_index].addr << 12);
+
+	if (!pt->entries[indexer.page_directory_index].present) {
+		return 0;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_directory_index].addr << 12);
+
+	if (!pt->entries[indexer.page_table_index].present) {
+		return 0;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.page_table_index].addr << 12);
+
+	if (!pt->entries[indexer.page_index].present) {
+		return 0;
+	}
+
+	return pt->entries[indexer.page_index].addr + indexer.offset;
 }
 
 void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
@@ -39,17 +67,29 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 
 		for (uint64_t k = 0; k < length + PAGE_SIZE; k += PAGE_SIZE) {
 			vmm_map(pt_kernel, base + k, base + k);
+
+			//dbg_printf("%x -> %x\n", base + k, 
+			//					vmm_translate(pt_kernel, (uintptr_t)base + k));
 		}
 	}
 
 	for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + HIGHER_HALF, i);
+
+		//dbg_printf("%x -> %x\n", i + HIGHER_HALF, 
+		//				vmm_translate(pt_kernel, (uintptr_t)i + HIGHER_HALF));
 	}
 
 
 	for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
+		
+		//dbg_printf("%x -> %x\n", i + KERNEL_PHYS_OFFSET, 
+		//					vmm_translate(pt_kernel, (uintptr_t)i + KERNEL_PHYS_OFFSET));
 	}
+
+	dbg_printf("%x -> %x\n", 0x101123, vmm_translate(pt_kernel, (uintptr_t)0x101123));
+	dbg_printf("%x -> %x\n", 0xdeadbeef, vmm_translate(pt_kernel, (uintptr_t)0xdeadbeef));1
 
 	kprintf("Loading page table...\n");
 
