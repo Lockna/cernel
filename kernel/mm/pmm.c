@@ -175,11 +175,11 @@ uintptr_t pmm_alloc()
 				// find the bit which is zero
 				// update `current_page_index`
 				// set the bit to one
-				for (uint32_t k = 0; k < 64; k++) {
+				for (uint64_t k = 0; k < 64; k++) {
 					uint64_t temp = current_base[i];
 					if ((temp >> k) % 2 == 0) {
 						current_page_index += k;
-						current_base[i] |= 1 << k;
+						current_base[i] |= (uint64_t)1 << k;
 						break;
 					}
 				}	
