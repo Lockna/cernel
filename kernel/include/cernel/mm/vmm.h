@@ -3,7 +3,6 @@
 #include <stivale/stivale.h>
 #include <stdint.h>
 
-#define PAGING_LVL 4
 #define KERNEL_PHYS_OFFSET ((uintptr_t)0xFFFFFFFF80000000)
 #define HIGHER_HALF ((uintptr_t)0xFFFF800000000000)
 
