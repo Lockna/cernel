@@ -7,12 +7,17 @@ Whether Windows would work natively I haven't tried yet, but feel free to includ
 
 ## Build requirements
 These are the tools needed for the build:
-- `git`
-- `bash`
+- `git` (for initial download)
 - `make`
 - `gcc` (for building gcc on your own)
-- `objcopy`
 - `qemu` (for testing)
+
+If you're working in WSL you will also need this packages for building gcc
+- `uuid-dev`
+- `libfuse-dev`
+- `libmpfr-dev`
+- `libmpc-dev`
+- `libgmp-dev`
 
 `nasm` is getting build via our toolchain
 
@@ -43,6 +48,9 @@ gdb> target remote :1234
 gdb> break * _start
 # And now you can start debugging using gdb
 ```
+
+## Contact
+Feel free to reach out to `Lockna#0002` or `mp#2453` on Discord
 
 ## Contributing
 Contributions to code and documentation are heavily appreciated, may it be a bug fix or a improvent of the existing code or code documentation.
