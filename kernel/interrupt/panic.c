@@ -53,7 +53,7 @@ void panic(cpu_register_state_t *state, char *error_message) {
     kprintf("R15: %x\n", state->r15);
     kprintf("CR3: %x\n", (uintptr_t)cr3_read());
     uintptr_t cr2;
-	asm("\t mov %%cr2,%0" : "=r"(cr2));
+	  asm("\t mov %%cr2,%0" : "=r"(cr2));
     kprintf("CR2: %x", cr2);
 
     while(1) {

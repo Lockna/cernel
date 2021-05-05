@@ -42,11 +42,9 @@ char* err_message[] = {
 void handle_interrupt(interrupt_context_t *irq_context)
 {
     // Just panic, nothing really to handle yet
-
-    kprintf("\n\n%s\n\n", err_message[irq_context->int_no]);
     kprintf("error number:%d\n", irq_context->err);
     kprintf("RIP: %x\n", irq_context->rip);
     kprintf("RSP: %x\n", irq_context->rsp);
 
-    panic(&irq_context->regs, "");
+    panic(&irq_context->regs, err_message[irq_context->int_no]);
 }
