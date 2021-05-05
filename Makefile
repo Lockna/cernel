@@ -19,10 +19,10 @@ image: $(KERNEL_HDD)
 all: $(KERNEL_HDD)
 
 run:
-	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -no-reboot
+	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -d int -no-reboot -no-shutdown
 
 drun:
-	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -s -S
+	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -s -S -d int -no-shutdown
 
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
