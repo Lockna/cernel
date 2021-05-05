@@ -32,7 +32,8 @@ enum {
     STIVALE_MMAP_ACPI_NVS = 4,
     STIVALE_MMAP_BAD_MEMORY = 5,
     STIVALE_MMAP_KERNEL_AND_MODULES = 10,
-    STIVALE_MMAP_BOOTLOADER_RECLAIMABLE = 0x1000
+    STIVALE_MMAP_BOOTLOADER_RECLAIMABLE = 0x1000,
+    STIVALE_MMAP_FRAMEBUFFER = 0x1002
 };
 
 struct stivale_mmap_entry {
@@ -68,6 +69,9 @@ struct stivale_struct {
     uint8_t  fb_green_mask_shift;
     uint8_t  fb_blue_mask_size;
     uint8_t  fb_blue_mask_shift;
+    uint8_t  reserved;
+    uint64_t smbios_entry_32;
+    uint64_t smbios_entry_64;
 } __attribute__((packed));
 
 #endif
