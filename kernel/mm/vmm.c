@@ -32,38 +32,28 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 {
 	pt_kernel = (struct PageTable *)pmm_allocz();
 
-	kprintf("%x", pt_kernel);
+	for (size_t i = 0; i < mmap_count; i++) {
+		// align the base address to the PAGE_SIZE
+		uintptr_t base = mmap[i].base - mmap[i].base % PAGE_SIZE;
+		uint64_t length = mmap[i].length;
 
-	kprintf("\nBefore the first for loop");
-
-	int a = 0;
-
-	for (size_t i = 0; i < get_memory_size(mmap, mmap_count); i += PAGE_SIZE) {
-		vmm_map(pt_kernel, i, i);
-		a++;
+		for (uint64_t k = 0; k < length + PAGE_SIZE; k += PAGE_SIZE) {
+			vmm_map(pt_kernel, base + k, base + k);
+		}
 	}
-
-	kprintf("\n%u", a);
-
-	kprintf("\nBetween first and second for loop");
 
 	for (size_t i = 0; i <= 0x100000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + HIGHER_HALF, i);
 	}
 
-	kprintf("\nBetween second and third for loop\n");
 
 	for (size_t i = 0; i <= 0x80000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
 	}
 
-	kprintf("After third for loop\n");
-
-	kprintf("%x\n", pt_kernel);
+	kprintf("Loading page table...\n");
 
 	cr3_set((uintptr_t)pt_kernel);
-
-	kprintf("%x\n", pt_kernel);
 }
 
 void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_addr) 
@@ -71,13 +61,6 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	struct AddressIndexer indexer;
 	create_address_indexer(&indexer, virt_addr);
 
-	// dbg_printf("\n%u --- virt_addr: %u\n", page_maped, virt_addr);
-	// dbg_printf("pdp_i: %u / pd_i: %u / pt_u: %u / p_i: %u", indexer.page_directory_pointer_index, 
-	// 													indexer.page_directory_index,
-	// 													indexer.page_table_index,
-	// 													indexer.page_index);
-
-	
 	struct PageTableEntry pte;
 	pte = page_table->entries[indexer.page_directory_pointer_index];
 
@@ -117,7 +100,7 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 		pte.addr = (uintptr_t)pt >> 12;
 		pte.present = 1;
 		pte.writable = 1;
-		pd->entries[indexer.page_directory_index] = pte;
+		pd->entries[indexer.page_table_index] = pte;
 	} else {
 		pt = (struct PageTable *)((uintptr_t)pte.addr << 12);
 	}

@@ -76,11 +76,6 @@ void _start(struct stivale_struct *stivale_struct)
 			  							 stivale_struct->memory_map_entries);
     kprintf("Done\n");
 
-    uint64_t memory_size = get_memory_size((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
-			  							 stivale_struct->memory_map_entries);
-
-    kprintf("%x\n", memory_size);
-
     vmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
 			  							 stivale_struct->memory_map_entries);
 
