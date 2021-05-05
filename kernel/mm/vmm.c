@@ -88,9 +88,6 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 		//					vmm_translate(pt_kernel, (uintptr_t)i + KERNEL_PHYS_OFFSET));
 	}
 
-	dbg_printf("%x -> %x\n", 0x101123, vmm_translate(pt_kernel, (uintptr_t)0x101123));
-	dbg_printf("%x -> %x\n", 0xdeadbeef, vmm_translate(pt_kernel, (uintptr_t)0xdeadbeef));1
-
 	kprintf("Loading page table...\n");
 
 	cr3_set((uintptr_t)pt_kernel);
