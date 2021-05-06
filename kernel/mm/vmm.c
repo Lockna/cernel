@@ -84,11 +84,8 @@ void vmm_init(struct stivale_struct *stivale)
 	uint64_t fbSize = stivale->framebuffer_height * stivale->framebuffer_pitch + 0x1000;
 	
     for (uint64_t i = fbBase; i < fbBase + fbSize; i += 0x1000){
-        vmm_map(pt_kernel, t, t);
+        vmm_map(pt_kernel, i, i);
     }
-
-	kprintf("Loading page table...\n");
-
 	cr3_set((uintptr_t)pt_kernel);
 }
 
