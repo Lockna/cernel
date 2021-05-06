@@ -76,9 +76,6 @@ void _start(struct stivale_struct *stivale_struct)
 			  							 stivale_struct->memory_map_entries);
     kprintf("Done\n");
 
-    struct AddressIndexer indexer;
-    create_address_indexer(&indexer, 0x803FE7F5CE);
-
     kprintf("PDP: %x\nPD: %x\nPT: %x\nP: %x\nOffset: %x\n", indexer.pml4, indexer.pml3, indexer.pml2, indexer.pml1, indexer.offset);
 
     vmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
