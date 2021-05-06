@@ -1,3 +1,4 @@
+#include <stivale/stivale.h>
 #include <cernel/mm/vmm.h>
 #include <cernel/mm/pmm.h>
 #include <cernel/lib/print.h>
@@ -53,9 +54,12 @@ uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr)
 	return pt->entries[indexer.pml1].addr + indexer.offset;
 }
 
-void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
+void vmm_init(struct stivale_struct *stivale)
 {
 	pt_kernel = (struct PageTable *)pmm_allocz();
+
+	size_t mmap_count = stivale->memory_map_entries;
+	struct stivale_mmap_entry *mmap = (struct stivale_mmap_entry *)stivale->memory_map_addr;
 
 	for (size_t i = 0; i < mmap_count; i++) {
 		// align the base address to the PAGE_SIZE
@@ -64,26 +68,24 @@ void vmm_init(struct stivale_mmap_entry *mmap, uint64_t mmap_count)
 
 		for (uint64_t k = 0; k < length + PAGE_SIZE; k += PAGE_SIZE) {
 			vmm_map(pt_kernel, base + k, base + k);
-
-			//dbg_printf("%x -> %x\n", base + k, 
-			//					vmm_translate(pt_kernel, (uintptr_t)base + k));
 		}
 	}
 
 	for (size_t i = 0; i < 0x100000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + HIGHER_HALF, i);
-
-		//dbg_printf("%x -> %x\n", i + HIGHER_HALF, 
-		//				vmm_translate(pt_kernel, (uintptr_t)i + HIGHER_HALF));
 	}
 
 
 	for (size_t i = 0; i < 0x80000000; i += PAGE_SIZE) {
 		vmm_map(pt_kernel, i + KERNEL_PHYS_OFFSET, i);
-		
-		//dbg_printf("%x -> %x\n", i + KERNEL_PHYS_OFFSET, 
-		//					vmm_translate(pt_kernel, (uintptr_t)i + KERNEL_PHYS_OFFSET));
 	}
+
+	uint64_t fbBase = (uint64_t)stivale->framebuffer_addr;
+	uint64_t fbSize = stivale->framebuffer_height * stivale->framebuffer_pitch + 0x1000;
+	
+    for (uint64_t i = fbBase; i < fbBase + fbSize; i += 0x1000){
+        vmm_map(pt_kernel, t, t);
+    }
 
 	kprintf("Loading page table...\n");
 
@@ -137,7 +139,7 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 	}
 
 	pte = pt->entries[indexer.pml1];
-	pte.addr = (uint64_t)phys_addr;
+	pte.addr = (uint64_t)phys_addr >> 12;
 	pte.present = 1;
 	pte.writable = 1;
 	pt->entries[indexer.pml1] = pte;

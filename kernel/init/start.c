@@ -76,8 +76,7 @@ void _start(struct stivale_struct *stivale_struct)
 			  							 stivale_struct->memory_map_entries);
     kprintf("Done\n");
 
-    vmm_init((struct stivale_mmap_entry *)stivale_struct->memory_map_addr, 
-			  							 stivale_struct->memory_map_entries);
+    vmm_init(stivale_struct);
 
     kprintf("vmm_init done\n");
 
