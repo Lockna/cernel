@@ -12,7 +12,7 @@ These are the tools needed for the build:
 - `gcc` (for building gcc on your own)
 - `qemu` (for testing)
 
-If you're working in WSL you will also need this packages for building gcc
+You also need this packages for building gcc, if they are not already installed
 - `uuid-dev`
 - `libfuse-dev`
 - `libmpfr-dev`
