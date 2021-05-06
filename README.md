@@ -23,7 +23,7 @@ If you're working in WSL you will also need this packages for building gcc
 
 ```bash
 # Clone the repository where you like
-git clone https://github.com/Lockna/cernel
+git clone https://github.com/Lockna/cernel --recurse-submodules
 cd cernel
 # Make the toolchain, so the kernel can be compiled with this tools
 make toolchain
