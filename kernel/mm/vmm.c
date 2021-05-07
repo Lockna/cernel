@@ -86,6 +86,7 @@ void vmm_init(struct stivale_struct *stivale)
     for (uint64_t i = fbBase; i < fbBase + fbSize; i += 0x1000){
         vmm_map(pt_kernel, i, i);
     }
+
 	cr3_set((uintptr_t)pt_kernel);
 }
 
@@ -144,12 +145,47 @@ void vmm_map(struct PageTable *page_table, uintptr_t virt_addr, uintptr_t phys_a
 
 void vmm_unmap(struct PageTable *page_table, void *virt) 
 {
+	struct AddressIndexer indexer;
+	create_address_indexer(&indexer, (uintptr_t)virt);
 
+	struct PageTable *pt = (struct PageTable *)page_table;
+
+	if (!pt->entries[indexer.pml4].present) {
+		return;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml4].addr << 12);
+
+	if (!pt->entries[indexer.pml3].present) {
+		return;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml3].addr << 12);
+
+	if (!pt->entries[indexer.pml2].present) {
+		return;
+	}
+
+	pt = (struct PageTable *)((uintptr_t)pt->entries[indexer.pml2].addr << 12);
+
+	if (!pt->entries[indexer.pml1].present) {
+		return;
+	}
+
+	pt->entries[indexer.pml1].present = 0;
+
+	for (size_t i = 0; i < 512; i++) {
+		if (pt->entries[i].present == 1) {
+			return;
+		}
+	}
+
+	pmm_free((uintptr_t)pt);
 }
 
 struct PageTable *vmm_create_new_address_space() 
 {
-	return NULL;
+	return (struct PageTable *)pmm_allocz();
 }
 
 void *cr3_read() 
