@@ -7,3 +7,4 @@ echfs/*
 toolchain/cross/*
 /limine
 /echfs
+.vscode/*
