@@ -11,19 +11,19 @@ LDINTERNALFLAGS := \
 	-nostdlib      \
 	-no-pie
 
-INTERNALCFLAGS  :=       \
-	-I include           \
-	-ffreestanding       \
-	-fno-stack-protector \
-	-fno-pic             \
-	-mno-80387           \
-	-mno-mmx             \
-	-mno-sse			 \
-	-mno-sse2			 \
-	-mno-3dnow           \
-	-mcmodel=kernel      \
-	-mno-red-zone		 \
-	-fno-builtin         \
+INTERNALCFLAGS  :=        \
+	-I include            \
+	-ffreestanding        \
+	-fstack-protector-all \
+	-fno-pic              \
+	-mno-80387            \
+	-mno-mmx              \
+	-mno-sse			  \
+	-mno-sse2			  \
+	-mno-3dnow            \
+	-mcmodel=kernel       \
+	-mno-red-zone		  \
+	-fno-builtin          \
 	-Wall
 
 CFILES   := $(shell find ./ -type f -name '*.c')
