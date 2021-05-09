@@ -32,6 +32,8 @@ struct PageTable {
 	struct PageTableEntry entries[512];
 }__attribute__((aligned(0x1000)));
 
+extern struct PageTable *pt_kernel;
+
 void create_address_indexer(struct AddressIndexer *indexer, uintptr_t virt_addr);
 
 uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr);
