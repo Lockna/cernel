@@ -27,7 +27,7 @@ git clone https://github.com/Lockna/cernel --recurse-submodules
 cd cernel
 # Make the toolchain, so the kernel can be compiled with this tools
 make toolchain
-# Make the kernel, you don't have to provide -j
+# Make the kernel, you can provide -j
 make
 # You can run the kernel either with make run or make drun
 make run
