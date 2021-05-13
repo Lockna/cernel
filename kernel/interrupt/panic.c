@@ -1,3 +1,11 @@
+/**
+ *	@file panic.c
+ *	@brief Dumbing registers to screen and halt execution
+ *
+ *  If a fatal error occurs during execution the panic function will get called, which prints
+ *  the registers to screen and halts the cpu.
+ */
+
 #include <cernel/interrupt/panic.h>
 #include <cernel/interrupt/handler.h>
 #include <cernel/lib/print.h>
