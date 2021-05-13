@@ -1,3 +1,11 @@
+/**
+ *	@file vmm.c
+ *	@brief Unmap/Map Pages for Paging
+ *
+ *  The vmm can create a new address space if needed (e.g. when a new process is created)
+ *	it can map or unmap pages to physical addresses and switch the page table
+ */
+
 #include <stivale/stivale.h>
 #include <cernel/mm/vmm.h>
 #include <cernel/mm/pmm.h>
