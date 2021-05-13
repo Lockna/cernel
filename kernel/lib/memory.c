@@ -1,3 +1,8 @@
+/**
+ *	@file memory.c
+ *	@brief Various memory functions
+ */
+
 #include <cernel/lib/memory.h>
 #include <stivale/stivale.h>
 
