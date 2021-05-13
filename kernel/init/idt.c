@@ -1,3 +1,11 @@
+/**
+ *	@file gdt.h
+ *	@brief Function prototypes and structs for gdt
+ *
+ *  These structs are representing the gdt, gdt_ptr or a gdt_entry.
+ *  The functions  are used to create an appropriate gdt and initialises it with correct values
+ */
+
 #include <cernel/init/idt.h>
 #include <stdint.h>
 #include <stddef.h>

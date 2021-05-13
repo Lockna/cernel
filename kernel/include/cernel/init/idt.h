@@ -1,23 +1,35 @@
 #ifndef IDT_H
 #define IDT_H
 
+/**
+ *	@file idt.h
+ *	@brief Function prototypes and structs for idt
+ *
+ *  These structs are for the single idt_entry or the pointer to the idt
+ *  The functions are used to create and initialise an idt for further usage
+ */
+
 #include <stdint.h>
 
-/// TODO: Document the structs and the functions in the idt.c file
-
+/**
+ *  @brief Single idt entry which represents an interrupt
+ */
 struct idt_entry {
-    uint16_t offset_lo;
-    uint16_t selector;
-    uint8_t  ist;
-    uint8_t  type_attr;
-    uint16_t offset_mid;
-    uint32_t offset_hi;
-    uint32_t zero;
+    uint16_t offset_lo;    ///< base address bits 0..15
+    uint16_t selector;     ///< code segment selector, typically 0x08
+    uint8_t  ist;          ///< bits 0..2 holds Interrupt Stack Table offset, rest of bits zero
+    uint8_t  type_attr;    ///< types and attributes
+    uint16_t offset_mid;   ///< base address bits 16..31
+    uint32_t offset_hi;    ///< base address bits 32..63
+    uint32_t zero;         ///< reserved
 } __attribute((packed));
 
+/**
+ *  @brief Pointer to idt table array, which can be loaded with the lidt instruction
+ */
 struct idt_ptr_t {
-    uint16_t size;
-    uint64_t address;
+    uint16_t size;         ///< size of whole idt
+    uint64_t address;      ///< address to idt
 } __attribute((packed));
 
 /**
