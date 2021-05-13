@@ -1,5 +1,13 @@
 #pragma once
 
+/**
+ *	@file print.h
+ *	@brief Function prototypes for internal print functions used by the kernel
+ *
+ *  kprintf results into a call to putc which prints all the characters.
+ *  Most other functions are used to convert values to strings so they can be printed easily
+ */
+
 #include <stdarg.h>
 #include <stdint.h>
 
@@ -96,9 +104,9 @@ void print_char(char ch, int width, void (*putc_ptr)(char c));
 void print_hex(uint64_t num, int width, int leadingZeros, void (*putc_ptr)(char c));
 
 /**
- 52  *  @brief converts a signed integer to ASCII hex string
- 53  *  @param output a pointer to the location where the string should be written to
- 54  *  @param num the number which should get converted to ASCII hex string
- 55  *  @return a pointer to the location where the ASCII hex string is stored
- 56  */
+ *  @brief converts a signed integer to ASCII hex string
+ *  @param output a pointer to the location where the string should be written to
+ *  @param num the number which should get converted to ASCII hex string
+ *  @return a pointer to the location where the ASCII hex string is stored
+ */
 char *num_to_ascii_hex(char *output, uint64_t num);

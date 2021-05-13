@@ -1,3 +1,12 @@
+/**
+ *	@file print.c
+ *	@brief Function for printing formatted strings to the framebuffer
+ *
+ *  In the kernel you can simply use kprintf to print something to screen
+ *	kprintf calls intern_printf which specifies the format parameters used in the format string
+ *	and converts the given variables to strings so they can be printed easily to screen.
+ */
+
 #include <cernel/lib/print.h>
 #include <cernel/drivers/fb/framebuffer.h>
 #include <stdint.h>
