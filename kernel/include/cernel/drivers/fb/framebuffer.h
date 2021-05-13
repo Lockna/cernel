@@ -1,6 +1,14 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
+/**
+ *	@file framebuffer.h
+ *	@brief Function prototypes for the framebuffer
+ *
+ *  The functions are used to write on the framebuffer and thus resulting into characters 
+ *  being printed on the screen
+ */
+
 #include <stdint.h>
 
 /**

@@ -1,3 +1,12 @@
+/**
+ *	@file framebuffer.c
+ *	@brief Framebuffer driver
+ *
+ *	These functions are used to write to the framebuffer
+ *	and further print chars.
+ *	The framebuffer is capable of printing in RGB but we are writing 0xFFFFFF so we got a clean white here
+ */
+
 #include <cernel/drivers/fb/framebuffer.h>
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
@@ -35,9 +44,9 @@ void putc(char c)
 
 	if (c == '\n') {
 		/// Subtracts the offset from the left edge, so the char is at the beginning of the line
-		/// Adds the size of a char, with one line as buffer, so they don't stick together
 		cursor_loc -= cursor_loc % pitch;
-		cursor_loc += pitch * 17; // <-- 16, the "size" of a char + 1 pixelline
+		/// Adds the size of a char, with one line as buffer, so they don't stick together
+		cursor_loc += pitch * 17; ///< 16, the "size" of a char + 1 pixelline
 		char_current_line = 0;
 		return;
 	}
@@ -90,9 +99,12 @@ void putc(char c)
 
 void puts(char *str) {
 
+	/// Sets the index of the string to zero
 	uint32_t index = 0;
 
+	/// Iterating through the string until a nullbyte is hit
 	while (str[index] != '\0') {
+		/// Printing the char on the specified index
 		putc(str[index++]);
 	}
 }
