@@ -1,3 +1,12 @@
+/**
+ *	@file pmm.c
+ *	@brief Allocates memory and manages it
+ *
+ *  The pmm manages the physical memory and so is able to allocate new memory or 
+ *	free already allocated memory or has an overview on how many memory is used
+ *	and how many is available
+ */
+
 #include <stivale/stivale.h>
 #include <cernel/mm/pmm.h>
 #include <stdint.h>
