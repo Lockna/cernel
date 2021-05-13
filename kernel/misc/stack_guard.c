@@ -1,3 +1,11 @@
+/**
+ *	@file stack_guard.c
+ *	@brief Function which is called when gcc notices a stack smash
+ *
+ *  When gcc notices that a stack smash happened it calls this function.
+ *  This function calls panic which is basically a crash of the kernel.
+ */
+
 #include <stdint.h>
 #include <cernel/interrupt/panic.h>
 
