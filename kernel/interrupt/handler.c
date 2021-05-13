@@ -1,3 +1,8 @@
+/**
+ *	@file handler.c
+ *	@brief Handling interrupts
+ */
+
 #include <cernel/interrupt/handler.h>
 #include <cernel/init/idt.h>
 #include <cernel/interrupt/panic.h>
