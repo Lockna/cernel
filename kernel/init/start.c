@@ -1,3 +1,13 @@
+/**
+ *	@file start.c
+ *	@brief Entry of the kernel
+ *
+ *  In this file we have our _start funciton which is the entry point of the whole kernel
+ *  Inside the _start function we initialise important things like framebuffer, interrupts, vmm and so on
+ *  Later this function will give the execution to our kernel_task
+ *  which then gets called from time to time from our scheduler
+ */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale/stivale.h>
