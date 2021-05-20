@@ -59,7 +59,7 @@ uintptr_t vmm_translate(struct PageTable *page_table, uintptr_t virt_addr)
 		return 0;
 	}
 
-	return pt->entries[indexer.pml1].addr + indexer.offset;
+	return (pt->entries[indexer.pml1].addr << 12) + indexer.offset;
 }
 
 void vmm_init(struct stivale_struct *stivale)
