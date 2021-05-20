@@ -18,6 +18,7 @@
 #include <cernel/lib/print.h>
 #include <cernel/mm/pmm.h>
 #include <cernel/mm/vmm.h>
+#include <cernel/lib/alloc.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -85,8 +86,10 @@ void _start(struct stivale_struct *stivale_struct)
     kprintf("Done\n");
 
     vmm_init(stivale_struct);
-
     kprintf("vmm_init done\n");
+
+    alloc_init();
+    kprintf("alloc_init done\n");
 
 	while(1) {
         asm ("hlt");
