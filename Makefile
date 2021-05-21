@@ -32,6 +32,7 @@ $(KERNEL_HDD): compile
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import kernel/cernel.elf cernel.elf
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
+	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine/limine.sys limine.sys
 	./limine/limine-install $(KERNEL_HDD)
 
 compile:
