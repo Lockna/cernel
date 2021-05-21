@@ -6,6 +6,7 @@
 #include <cernel/mm/vmm.h>
 #include <cernel/lib/print.h>
 #include <cernel/interrupt/panic.h>
+#include <debug/debug.h>
 
 void *heap_end;
 struct HeapNode *head;
@@ -14,6 +15,7 @@ static void splitBlock(struct HeapNode *node, size_t size) {
     struct HeapNode *current = (void *)((uint64_t)node + sizeof(struct HeapNode) + size);
 
     current->size = node->size - size - sizeof(struct HeapNode);
+    node->size = size;
     current->isUsed = false;
     current->cookie = HEAP_COOKIE;
 
@@ -28,7 +30,7 @@ static void splitBlock(struct HeapNode *node, size_t size) {
 static void combineHeapNodeForward(struct HeapNode *node) {
     if (node->next == NULL)
         return;
-    
+
     node->size += node->next->size + sizeof(struct HeapNode);
     node->next = node->next->next;
 
@@ -45,6 +47,7 @@ static void combineHeapNodeBackward(struct HeapNode *node) {
 
 // extend the heap by a certain amount of pages
 static void expand_heap(size_t page_count) {
+
     for (size_t i = 0; i < page_count; i++) {
         uintptr_t ptr = pmm_alloc();
         vmm_map(pt_kernel, (uintptr_t)heap_end, ptr);
