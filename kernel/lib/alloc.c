@@ -106,6 +106,8 @@ void *kmalloc(size_t size) {
 
             expand_heap(page_count);
 
+            current->size += (page_count * PAGE_SIZE);
+
             return kmalloc(size); 
         }
 
