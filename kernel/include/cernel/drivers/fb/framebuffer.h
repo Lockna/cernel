@@ -37,4 +37,9 @@ void putc(char c);
  *	@param str string to be printed
  */
 void puts(char *str);
+
+/**
+ *  @brief Cleares the framebuffer
+ */
+void framebuffer_clear();
 #endif

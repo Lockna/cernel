@@ -10,6 +10,7 @@
 #include <cernel/drivers/fb/framebuffer.h>
 #include <cernel/drivers/fb/font.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdarg.h>
 #include <cernel/lib/print.h>
 
@@ -107,4 +108,16 @@ void puts(char *str) {
 		/// Printing the char on the specified index
 		putc(str[index++]);
 	}
+}
+
+void framebuffer_clear() {
+	
+	/// Clearing the whole framebuffer
+	for (size_t i = 0; i < height*pitch; i++) {
+		framebuffer[i] = 0;
+	}
+
+	/// Setting the cursor to position 0
+	cursor_loc = 0;
+
 }
