@@ -101,7 +101,8 @@ void *kmalloc(size_t size) {
         } else if (current->next == NULL) {
             // expand heap is needed
 
-            size_t page_count = size / PAGE_SIZE;
+            size_t page_count = (size + sizeof(struct HeapNode) - current->size) / PAGE_SIZE;             
+            
             page_count++;
 
             expand_heap(page_count);
