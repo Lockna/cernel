@@ -81,7 +81,6 @@ service_interrupt:
 
 	mov rdi, rsp
 	call handle_interrupt
-	mov rsp, rax
 
 	pop r15
 	pop r14

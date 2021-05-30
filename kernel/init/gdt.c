@@ -58,6 +58,7 @@ void gdt_load()
             movw %ax, %es    \n \
             movw %ax, %fs    \n \
             movw %ax, %gs    \n \
+			movw %ax, %ss    \n \
 			push $8 \n \
 			push $next \n \
 			retfq \n \
