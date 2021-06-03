@@ -6,6 +6,8 @@
  */
 
 #include <stddef.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stivale/stivale.h>
 
 /**
@@ -37,3 +39,6 @@ void *memset(uint8_t *ptr, uint8_t value, size_t count);
  *  @return just returns the pointer
  */
 void *memset64(uint64_t *ptr, uint64_t value, size_t count);
+
+bool memcmp(void *p1, void *p2, size_t count);
+

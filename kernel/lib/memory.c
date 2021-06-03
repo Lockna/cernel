@@ -34,3 +34,20 @@ void *memset64(uint64_t *ptr, uint64_t value, size_t count) {
 
 	return ptr;
 }
+
+bool memcmp(void *p1, void *p2, size_t count)
+{
+	if (p1 == NULL || p2 == NULL)
+		return false;
+	
+	uint8_t *ptr1 = (uint8_t *)p1;
+	uint8_t *ptr2 = (uint8_t *)p2;
+
+    for (size_t i = 0; i < count; i++) {
+        if (ptr1[i] != ptr2[i])
+            return false;
+    }
+
+    return true;
+}
+
