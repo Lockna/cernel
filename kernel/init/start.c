@@ -19,6 +19,7 @@
 #include <cernel/mm/pmm.h>
 #include <cernel/mm/vmm.h>
 #include <cernel/lib/alloc.h>
+#include <cernel/acpi/acpi.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -90,6 +91,11 @@ void _start(struct stivale_struct *stivale_struct)
 
     alloc_init();
     kprintf("alloc_init done\n");
+
+	acpi_init((struct RSDPDescriptor *)stivale_struct->rsdp);
+	kprintf("acpi_init done\n");
+
+	kprintf("FADT: %p\n", acpi_find_sdt("APIC"));
 
 	while(1) {
         asm ("hlt");
