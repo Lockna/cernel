@@ -95,8 +95,6 @@ void _start(struct stivale_struct *stivale_struct)
 	acpi_init((struct RSDPDescriptor *)stivale_struct->rsdp);
 	kprintf("acpi_init done\n");
 
-	kprintf("FADT: %p\n", acpi_find_sdt("APIC"));
-
 	while(1) {
         asm ("hlt");
     }

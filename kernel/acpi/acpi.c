@@ -2,6 +2,7 @@
 #include <cernel/interrupt/panic.h>
 #include <cernel/lib/print.h>
 #include <cernel/lib/memory.h>
+#include <cernel/acpi/madt.h>
 
 #include <stdint.h>
 #include <stddef.h>
@@ -65,7 +66,8 @@ void acpi_init(struct RSDPDescriptor *stivale_rsdp)
 	}
 
 	// call all table init functions
-		
+	madt_init();
+	kprintf("madt_init done\n");		
 }
 
 void *acpi_find_sdt(char *signature)
