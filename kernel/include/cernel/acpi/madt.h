@@ -3,6 +3,7 @@
 #include <cernel/acpi/acpi.h>
 
 #include <stdint.h>
+#include <stddef.h>
 
 struct MADT {
 	struct SDT sdt;
@@ -18,7 +19,7 @@ struct MADT_header {
 	uint8_t length;
 } __attribute__ ((packed));
 
-struct MADT_local_apic {
+struct MADT_lapic {
     struct MADT_header header;
     uint8_t processor_id;
     uint8_t apic_id;
@@ -70,5 +71,25 @@ enum {
 	MADT_ENTRY_LAPIC_NMI,
 	MADT_ENTRY_LAPIC_ADDRESS_OVERRIDE
 };
+
+extern struct MADT *madt;
+
+extern struct MADT_lapic **madt_lapics;
+extern size_t madt_lapic_count;
+
+extern struct MADT_io_apic **madt_io_apics;
+extern size_t madt_io_apic_count;
+
+extern struct MADT_iso **madt_isos;
+extern size_t madt_iso_count;
+
+extern struct MADT_lapic_nmi **madt_lapic_nmis;
+extern size_t madt_lapic_nmi_count;
+
+extern struct MADT_ioapic_nmi **madt_ioapic_nmis;
+extern size_t madt_ioapic_nmi_count;
+
+extern struct MADT_lapic_address_override **madt_lapic_address_overrides;
+extern size_t madt_lapic_address_override_count;
 
 void madt_init();
