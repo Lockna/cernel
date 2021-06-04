@@ -34,7 +34,8 @@ void madt_init()
 
 	kprintf("Found MADT at %p\n", madt);
 
-	size_t length = madt->sdt.length;
+	// calculate length of the madt entries
+	size_t length = (uint64_t)madt->sdt.length - sizeof(struct SDT) - 8;
 
 	kprintf("MADT size: %u\n", length);
 
