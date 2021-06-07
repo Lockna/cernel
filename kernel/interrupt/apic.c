@@ -10,8 +10,11 @@
 #include <cernel/apic/madt.h>
 #include <cernel/mm/vmm.h>
 
+uint32_t *lapic_eoi_ptr;
+
 void init_apic()
 {
+    uintptr_t lapic_base = madt->lapic_address +  KERNEL_PHYS_OFFSET;
     lapic_enable();
 }
 
