@@ -22,9 +22,6 @@ size_t madt_lapic_nmi_count = 0;
 struct MADT_ioapic_nmi **madt_ioapic_nmis;
 size_t madt_ioapic_nmi_count = 0;
 
-struct MADT_lapic_address_override **madt_lapic_address_overrides;
-size_t madt_lapic_address_override_count = 0;
-
 void madt_init()
 {
 	madt = acpi_find_sdt("APIC");
@@ -46,7 +43,6 @@ void madt_init()
 	madt_isos = kmalloc(256);
 	madt_lapic_nmis = kmalloc(256);
 	madt_ioapic_nmis = kmalloc(256);
-	madt_lapic_address_overrides = kmalloc(256);	
 
 	void *begin = &madt->entries_begin;
 
@@ -78,9 +74,7 @@ void madt_init()
 				madt_lapic_nmi_count++;
 				break;
 			case MADT_ENTRY_LAPIC_ADDRESS_OVERRIDE:
-				madt_lapic_address_overrides[madt_lapic_address_override_count] = 
-									(struct MADT_lapic_address_override*)current_header;
-				madt_lapic_address_override_count++;
+				madt->lapic_address = ((struct MADT_lapic_address_override*)current_header)->lapic_phys_addr;
 				break;
 		}
 	}

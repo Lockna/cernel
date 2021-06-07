@@ -89,7 +89,4 @@ extern size_t madt_lapic_nmi_count;
 extern struct MADT_ioapic_nmi **madt_ioapic_nmis;
 extern size_t madt_ioapic_nmi_count;
 
-extern struct MADT_lapic_address_override **madt_lapic_address_overrides;
-extern size_t madt_lapic_address_override_count;
-
 void madt_init();
