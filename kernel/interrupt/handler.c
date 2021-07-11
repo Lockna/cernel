@@ -7,6 +7,7 @@
 #include <cernel/init/idt.h>
 #include <cernel/interrupt/panic.h>
 #include <cernel/lib/print.h>
+#include <cernel/interrupt/apic.h>
 
 char* err_message[] = {
     "Divide by 0",
@@ -46,10 +47,17 @@ char* err_message[] = {
 
 void handle_interrupt(interrupt_context_t *irq_context)
 {
-    // Just panic, nothing really to handle yet
-    kprintf("error code:%d\n", irq_context->err);
-    kprintf("RIP: %x\n", irq_context->rip);
-    kprintf("RSP: %x\n", irq_context->rsp);
+	// check which interrupt happened and handle it
+	// default: print info and panic
+    switch (irq_context->int_no) {
+		case 255:
+			// spurious interrupt
+			break;
+		default:
+			kprintf("error code:%d\n", irq_context->err);
+			kprintf("RIP: %x\n", irq_context->rip);
+			kprintf("RSP: %x\n", irq_context->rsp);
 
-    panic(&irq_context->regs, err_message[irq_context->int_no]);
+			panic(&irq_context->regs, err_message[irq_context->int_no]);
+	}
 }
