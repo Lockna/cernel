@@ -2,6 +2,10 @@
 set -e
 set -x
 
+if [[ $OSTYPE == 'darwin'* ]]; then
+  echo 'macOS'
+fi
+
 cd toolchain
 mkdir -p cross
 cd cross

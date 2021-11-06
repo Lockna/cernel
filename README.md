@@ -21,6 +21,17 @@ You also need this packages for building gcc, if they are not already installed
 
 `nasm` is getting build via our toolchain
 
+If you use macOS you will need these packages instead:
+ - git
+ - make
+ - qemu
+ - x86_64-elf-gdb 
+ - x86_64-elf-gcc 
+ - x86_64-elf-binutils
+ - nasm
+
+The build steps are equivalent to the linux ones
+
 ```bash
 # Clone the repository where you like
 git clone https://github.com/Lockna/cernel --recurse-submodules

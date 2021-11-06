@@ -1,8 +1,14 @@
 TARGET := cernel.elf
 
-CC = ../toolchain/cross/bin/x86_64-elf-gcc
+ifeq ($(OS),Darwin)
+  CC = x86_64-elf-gcc
+  ASM = nasm
+else
+  CC = ../toolchain/cross/bin/x86_64-elf-gcc
+  ASM = ../toolchain/cross/bin/nasm
+endif
+
 CFLAGS = -Wall -Wextra -g -O2 -pipe
-ASM = ../toolchain/cross/bin/nasm
 ASMFLAGS = -g -felf64
 
 LDINTERNALFLAGS := \
