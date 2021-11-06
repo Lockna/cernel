@@ -1,4 +1,11 @@
 IS_WSL := $(shell uname -a | grep -i 'Microsoft')
+IS_MACOS := $(shell uname -a | grep -i 'Darwin')
+
+ifdef IS_MACOS
+	DD_FLAGS = bs=1m count=0 seek=64
+else
+	DD_FLAGS = bs=1M count=0 seek64
+endif
 
 ifeq ($(OS),Windows_NT)
     QEMU = qemu-system-x86_64.exe
@@ -26,7 +33,7 @@ drun:
 
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
-	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
+	dd if=/dev/zero $(DD_FLAGS) of=$(KERNEL_HDD)
 	parted -s $(KERNEL_HDD) mklabel gpt
 	parted -s $(KERNEL_HDD) mkpart primary 2048s 100%
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512

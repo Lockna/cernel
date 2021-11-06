@@ -1,11 +1,13 @@
 TARGET := cernel.elf
 
-ifeq ($(OS),Darwin)
-  CC = x86_64-elf-gcc
-  ASM = nasm
+IS_MACOS := $(shell uname -a | grep -i 'Darwin')
+
+ifdef IS_MACOS
+	CC = x86_64-elf-gcc
+	ASM = nasm
 else
-  CC = ../toolchain/cross/bin/x86_64-elf-gcc
-  ASM = ../toolchain/cross/bin/nasm
+	CC = ../toolchain/cross/bin/x86_64-elf-gcc
+  	ASM = ../toolchain/cross/bin/nasm
 endif
 
 CFLAGS = -Wall -Wextra -g -O2 -pipe
