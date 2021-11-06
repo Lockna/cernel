@@ -3,7 +3,7 @@ set -e
 set -x
 
 if [[ $OSTYPE == 'darwin'* ]]; then
-  echo 'macOS'
+  exit 0
 fi
 
 cd toolchain
