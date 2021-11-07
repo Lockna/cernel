@@ -1,5 +1,7 @@
 TARGET := cernel.elf
 
+IS_MACOS := $(shell uname -a | grep -i 'Darwin')
+
 ifdef IS_MACOS
 	CC = x86_64-elf-gcc
 	ASM = nasm
