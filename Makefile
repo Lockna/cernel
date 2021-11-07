@@ -65,9 +65,11 @@ clean:
 
 toolchain:
 	make -C limine
+ifndef IS_MACOS
 	make -C echfs echfs-utils
 	chmod +x toolchain/make_toolchain.sh
 	./toolchain/make_toolchain.sh
+endif
 
 cleanToolchain:
 	make -C limine clean
