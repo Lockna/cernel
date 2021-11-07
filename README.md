@@ -38,7 +38,7 @@ The builds steps on macOS are exactly the same as on Linux
 git clone https://github.com/Lockna/cernel --recurse-submodules
 cd cernel
 # Make the toolchain, so the kernel can be compiled with this tools
-# Since on macOS we have more dependencies we only build limine in make toolchain, not the whole toolchain
+# Since we have more dependencies on macOS, we only build limine in make toolchain, not the whole toolchain
 make toolchain
 # Make the kernel, you can provide -j
 make
