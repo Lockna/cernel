@@ -22,14 +22,14 @@ You also need this packages for building gcc, if they are not already installed
 `nasm` is getting build via our toolchain
 
 If you use macOS you will need these packages instead:
- - git
- - make
- - qemu
- - x86_64-elf-gdb 
- - x86_64-elf-gcc 
- - x86_64-elf-binutils
- - nasm
- - xorriso
+ - `git`
+ - `make`
+ - `qemu`
+ - `x86_64-elf-gdb`
+ - `x86_64-elf-gcc`
+ - `x86_64-elf-binutils`
+ - `nasm`
+ - `xorriso`
 
 The builds steps on macOS are exactly the same as on Linux
 
