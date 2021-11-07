@@ -4,7 +4,7 @@ IS_MACOS := $(shell uname -a | grep -i 'Darwin')
 ifdef IS_MACOS
 	DD_FLAGS = bs=1m count=0 seek=64
 else
-	DD_FLAGS = bs=1M count=0 seek64
+	DD_FLAGS = bs=1M count=0 seek=64
 endif
 
 ifeq ($(OS),Windows_NT)
