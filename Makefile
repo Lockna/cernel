@@ -3,6 +3,7 @@ IS_MACOS := $(shell uname -a | grep -i 'Darwin')
 
 ifdef IS_MACOS
 	DD_FLAGS = bs=1m count=0 seek=64
+	XORRISO_FLAGS = -as mkisofs -b /boot/limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot /boot/limine-eltorito-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label pack 
 else
 	DD_FLAGS = bs=1M count=0 seek=64
 endif
@@ -34,12 +35,25 @@ drun:
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
 	dd if=/dev/zero $(DD_FLAGS) of=$(KERNEL_HDD)
+
+ifdef IS_MACOS
+	mkdir pack
+	mkdir pack/boot
+	cp kernel/cernel.elf pack/
+	cp limine.cfg pack/boot/
+	cp ./limine/limine.sys pack/boot/
+	cp ./limine/limine-cd.bin pack/boot/
+	cp ./limine/limine-eltorito-efi.bin pack/boot/
+	xorriso $(XORRISO_FLAGS) -o $(KERNEL_HDD)
+	rm -rf pack
+else
 	parted -s $(KERNEL_HDD) mklabel gpt
 	parted -s $(KERNEL_HDD) mkpart primary 2048s 100%
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import kernel/cernel.elf cernel.elf
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine/limine.sys limine.sys
+endif
 	./limine/limine-install $(KERNEL_HDD)
 
 compile:

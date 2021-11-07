@@ -21,6 +21,18 @@ You also need this packages for building gcc, if they are not already installed
 
 `nasm` is getting build via our toolchain
 
+```bash
+# Clone the repository where you like
+git clone https://github.com/Lockna/cernel --recurse-submodules
+cd cernel
+# Make the toolchain, so the kernel can be compiled with this tools
+make toolchain
+# Make the kernel, you can provide -j
+make
+# You can run the kernel either with make run or make drun
+make run
+```
+
 If you use macOS you will need these packages instead:
  - git
  - make
@@ -29,15 +41,15 @@ If you use macOS you will need these packages instead:
  - x86_64-elf-gcc 
  - x86_64-elf-binutils
  - nasm
+ - xorriso
 
-The build steps are equivalent to the linux ones
+The builds steps on macOS differ slightly from the Linux ones
 
 ```bash
 # Clone the repository where you like
 git clone https://github.com/Lockna/cernel --recurse-submodules
 cd cernel
-# Make the toolchain, so the kernel can be compiled with this tools
-make toolchain
+# On macOS you don't have to build the toolchain yourself, everything is provided by the dependencies
 # Make the kernel, you can provide -j
 make
 # You can run the kernel either with make run or make drun
