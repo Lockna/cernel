@@ -287,6 +287,26 @@ void print_int64(int64_t num, int width, void (*putc_ptr)(char c))
 	}
 }
 
+void print_rgb(uint8_t r, uint8_t g, uint8_t b, char *format, ...) 
+{
+	/// Storing the color temporarily, since the color is only changed for this write
+	uint32_t temp_color = color;
+
+	/// Setting the framebuffer color to new color
+	fb_set_color(r, g, b);
+
+	/// Create variable argument list for intern_printf
+	va_list args;
+	va_start(args, format);
+	
+	intern_printf(format, args, putc);
+
+	va_end(args);
+
+	// Restoring framebuffer color from temporary variable
+	fb_set_color((temp_color >> 16) & 0xff, (temp_color >> 8) & 0Xff, temp_color & 0xff);
+}
+
 int strlen(char *str)
 {
 	int ret = 0;

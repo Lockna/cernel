@@ -11,13 +11,16 @@
 
 #include <stdint.h>
 
+/// Make color publicly visible
+extern uint32_t color;
+
 /**
  *	@brief Sets the global variables to their corrosponding value
- *	@param fb_adress Adress of the framebuffer
- *	@param framebuffer_width Width of the framebuffer in bytes
- *	@param framebuffer_height Heigh of the framebuffer in bytes
- *	@param framebuffer_bpp Bytes per pixel, see how many pixel are needed for one byte
- *	@param framebuffer_pitch Width of the framebuffer in pixels
+ *	@param fb_address Address of the framebuffer
+ *	@param framebuffer_width Width of the framebuffer in pixels
+ *	@param framebuffer_height Heigh of the framebuffer in pixels
+ *	@param framebuffer_bpp Bits per pixel, see how many bits are needed for one pixel
+ *	@param framebuffer_pitch Width of the framebuffer in bytes
  *	@return 0 at success, since nothing is done, that could fail, it just returns 0
  */
 uint8_t load_fb_driver(uint8_t *fb_adress, 
@@ -41,5 +44,7 @@ void puts(char *str);
 /**
  *  @brief Cleares the framebuffer
  */
-void framebuffer_clear();
+void fb_clear();
+
+void fb_set_color(uint8_t r, uint8_t g, uint8_t b);
 #endif

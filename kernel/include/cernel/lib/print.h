@@ -110,3 +110,5 @@ void print_hex(uint64_t num, int width, int leadingZeros, void (*putc_ptr)(char 
  *  @return a pointer to the location where the ASCII hex string is stored
  */
 char *num_to_ascii_hex(char *output, uint64_t num);
+
+void print_rgb(uint8_t r, uint8_t g, uint8_t b, char *format, ...);

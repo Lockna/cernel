@@ -9,9 +9,12 @@
 
 #include <cernel/drivers/fb/framebuffer.h>
 #include <cernel/drivers/fb/font.h>
+#include <cernel/lib/alloc.h>
+#include <cernel/lib/memory.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <cernel/lib/print.h>
 
 uint64_t cursor_loc = 0;
@@ -20,20 +23,24 @@ uint16_t width = 0;
 uint16_t height = 0;
 uint16_t bpp = 0;
 uint16_t pitch = 0;
+uint32_t fb_length_in_bytes = 0;
 uint16_t char_per_line = 0;
 uint16_t char_current_line = 0;
 
-uint8_t load_fb_driver(uint8_t *fb_adress, 
+uint32_t color = 0x00ffffff;
+
+uint8_t load_fb_driver(uint8_t *fb_address, 
 				uint16_t framebuffer_width,
 				uint16_t framebuffer_height, 
                 uint16_t framebuffer_bpp,
                 uint16_t framebuffer_pitch) 
 {
-	framebuffer = fb_adress;
+	framebuffer = fb_address;
 	width = framebuffer_width;
 	height = framebuffer_height;
 	pitch = framebuffer_pitch;
 	bpp = framebuffer_bpp;
+	fb_length_in_bytes = height * pitch;
 	char_per_line = framebuffer_width / 9;
 
 	return 0;
@@ -77,9 +84,9 @@ void putc(char c)
 
 			/// Iterate through the single bits of the n-th bitmap line
 			if (bitmap & (1 << (7-j))) {
-				framebuffer[cursor_loc] = 0xff;
-				framebuffer[cursor_loc+1] = 0xff;
-				framebuffer[cursor_loc+2] = 0xff;
+				framebuffer[cursor_loc] = color & 0xff;
+				framebuffer[cursor_loc+1] = (color >> 0x8) & 0xff;
+				framebuffer[cursor_loc+2] = (color >> 0xf) & 0xff;
 			}
 			/// Add the length of a single pixel to the cursor, so it won't overwrite the already drawn pixel
 			cursor_loc += (bpp/8);
@@ -98,8 +105,8 @@ void putc(char c)
 	cursor_loc -= pitch*16;
 }
 
-void puts(char *str) {
-
+void puts(char *str) 
+{
 	/// Sets the index of the string to zero
 	uint32_t index = 0;
 
@@ -110,14 +117,24 @@ void puts(char *str) {
 	}
 }
 
-void framebuffer_clear() {
-	
+void fb_clear() 
+{
 	/// Clearing the whole framebuffer
-	for (size_t i = 0; i < height*pitch; i++) {
+	for (size_t i = 0; i < fb_length_in_bytes; i++) {
 		framebuffer[i] = 0;
 	}
 
 	/// Setting the cursor to position 0
 	cursor_loc = 0;
+}
 
+void fb_set_color(uint8_t r, uint8_t g, uint8_t b) 
+{
+	/// First clearing the color variable
+	color = 0;
+
+	/// Set the color accordingly
+	color |= r << 16;
+	color |= g << 8;
+	color |= b;
 }
