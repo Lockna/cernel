@@ -1,3 +1,5 @@
+export
+
 IS_WSL := $(shell uname -a | grep -i 'Microsoft')
 IS_MACOS := $(shell uname -a | grep -i 'Darwin')
 
@@ -18,11 +20,15 @@ ifdef IS_WSL
 	QEMU = qemu-system-x86_64.exe
 endif
 
+ifdef RELEASE
+	MODE = release
+else
+	MODE = debug
+endif
+
 KERNEL_HDD = cernel.hdd
 
 .PHONY: drun run compile clean all toolchain cleanToolchain
-
-image: $(KERNEL_HDD)
 
 all: $(KERNEL_HDD)
 

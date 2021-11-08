@@ -1,7 +1,5 @@
 TARGET := cernel.elf
 
-IS_MACOS := $(shell uname -a | grep -i 'Darwin')
-
 ifdef IS_MACOS
 	CC = x86_64-elf-gcc
 	ASM = nasm
@@ -10,8 +8,14 @@ else
   	ASM = ../toolchain/cross/bin/nasm
 endif
 
-CFLAGS = -Wall -Wextra -g -O2 -pipe
-ASMFLAGS = -g -felf64
+CFLAGS = -Wall -Wextra -O2 -pipe
+ASMFLAGS = -felf64
+
+# add options for debug build here
+ifeq ($(MODE),debug)
+	CFLAGS += -g
+	ASMFLAGS += -g
+endif
 
 LDINTERNALFLAGS := \
 	-Tlinker.ld    \
@@ -31,8 +35,7 @@ INTERNALCFLAGS  :=        \
 	-mno-3dnow            \
 	-mcmodel=kernel       \
 	-mno-red-zone		  \
-	-fno-builtin          \
-	-Wall
+	-fno-builtin
 
 CFILES   := $(shell find ./ -type f -name '*.c')
 OBJ    	 := $(addprefix ./bin/,$(CFILES:.c=.o))

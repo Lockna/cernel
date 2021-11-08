@@ -42,6 +42,8 @@ cd cernel
 make toolchain
 # Make the kernel, you can provide -j
 make
+# For creating a release build
+make RELEASE=yes
 # You can run the kernel either with make run or make drun
 make run
 ```
