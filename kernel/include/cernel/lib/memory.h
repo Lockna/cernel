@@ -42,3 +42,4 @@ void *memset64(uint64_t *ptr, uint64_t value, size_t count);
 
 bool memcmp(void *p1, void *p2, size_t count);
 
+void *memcpy(uint8_t *dst, uint8_t *src, size_t n);
