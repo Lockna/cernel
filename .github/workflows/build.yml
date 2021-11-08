@@ -16,7 +16,7 @@ jobs:
             - run: sudo apt install uuid-dev libfuse-dev libmpfr-dev libmpc-dev libgmp-dev
             - run: make toolchain
             - run: make compile
-            - run: make image
+            - run: make
             - run: ls -lah
             - run: echo Done
             - uses: actions/upload-artifact@v2
