@@ -13,8 +13,8 @@ ASMFLAGS = -felf64
 
 # add options for debug build here
 ifeq ($(MODE),debug)
-	CFLAGS += -g
-	ASMFLAGS += -g
+	CFLAGS += -g -Ddebug
+	ASMFLAGS += -g -Ddebug
 endif
 
 LDINTERNALFLAGS := \
