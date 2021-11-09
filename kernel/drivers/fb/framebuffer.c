@@ -67,6 +67,11 @@ void putc(char c)
 		return;
 	}
 
+	if (c == '\t') {
+		puts("    ");
+		return;
+	}
+
 	if (char_per_line == char_current_line) {
 		char_current_line = 0;
 		cursor_loc -= cursor_loc % pitch;
