@@ -8,6 +8,7 @@
 #include <cernel/interrupt/panic.h>
 #include <cernel/lib/print.h>
 #include <cernel/interrupt/apic.h>
+#include <debug/debug.h>
 
 char* err_message[] = {
     "Divide by 0",
@@ -47,6 +48,8 @@ char* err_message[] = {
 
 void handle_interrupt(interrupt_context_t *irq_context)
 {
+    print_stacktrace(irq_context->rip, irq_context->regs.rbp);
+
 	// check which interrupt happened and handle it
 	// default: print info and panic
     switch (irq_context->int_no) {

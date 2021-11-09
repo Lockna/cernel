@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 /** 
  *  @file debug.h
  *  @brief Function prototypes for debug print functions to qemu console
@@ -27,3 +29,5 @@ void dbgc(char c);
  *  @return void
  */
 void dbg_printf(char *format, ...);
+
+void print_stacktrace(uint64_t rip_value, uint64_t rbp_value);
