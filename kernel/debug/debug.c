@@ -11,6 +11,28 @@
 #include <cernel/lib/print.h>
 #include <stdarg.h>
 
+void print_stacktrace(uint64_t rip_value, uint64_t rbp_value) {
+
+#ifndef debug
+	kprintf("Stack trace not available for release builds\n");
+	return;
+#endif
+
+	kprintf("======= Starting Backtrace =======\n");
+
+	uint64_t *rbp = (uint64_t*)rbp_value;
+
+	kprintf("    %p\n", rip_value);
+
+	while (*rbp != 0) {
+		// print the saved rip
+		kprintf("    %p\n", *(rbp + 1));
+		rbp = (uint64_t*)*rbp; // jump to previous stack frame
+	}
+
+	kprintf("======== End of Backtrace ========\n");
+}
+
 void dbg_printf(char *format, ...)
 {
      va_list args;
