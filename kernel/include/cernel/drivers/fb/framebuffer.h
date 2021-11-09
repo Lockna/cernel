@@ -47,4 +47,7 @@ void puts(char *str);
 void fb_clear();
 
 void fb_set_color(uint8_t r, uint8_t g, uint8_t b);
+
+void fb_activate_double_buffering();
+void fb_flush();
 #endif

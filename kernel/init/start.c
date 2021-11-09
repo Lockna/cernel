@@ -93,6 +93,9 @@ void _start(struct stivale_struct *stivale_struct)
     alloc_init();
     kprintf("alloc_init done\n");
 
+    fb_activate_double_buffering();
+    kprintf("activated double buffering\n");
+
 	acpi_init((struct RSDPDescriptor *)stivale_struct->rsdp);
 	kprintf("acpi_init done\n");
 

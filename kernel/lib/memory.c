@@ -51,7 +51,7 @@ bool memcmp(void *p1, void *p2, size_t count)
     return true;
 }
 
-void *memcpy(uint8_t *dst, uint8_t *src, size_t n) 
+volatile void *memcpy(volatile uint8_t *dst, volatile uint8_t *src, size_t n) 
 {
 	for (size_t i = 0; i < n; i++) {
 		dst[i] = src[i];

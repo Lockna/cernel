@@ -29,6 +29,12 @@ uint16_t char_current_line = 0;
 
 uint32_t color = 0x00ffffff;
 
+volatile uint8_t *double_buffer = NULL;
+
+volatile uint8_t *buffer = NULL;
+
+bool buffering_active = false;
+
 uint8_t load_fb_driver(uint8_t *fb_address, 
 				uint16_t framebuffer_width,
 				uint16_t framebuffer_height, 
@@ -42,6 +48,7 @@ uint8_t load_fb_driver(uint8_t *fb_address,
 	bpp = framebuffer_bpp;
 	fb_length_in_bytes = height * pitch;
 	char_per_line = framebuffer_width / 9;
+	buffer = framebuffer;
 
 	return 0;
 }
@@ -56,6 +63,7 @@ void putc(char c)
 		/// Adds the size of a char, with one line as buffer, so they don't stick together
 		cursor_loc += pitch * 17; ///< 16, the "size" of a char + 1 pixelline
 		char_current_line = 0;
+		fb_flush();
 		return;
 	}
 
@@ -84,9 +92,9 @@ void putc(char c)
 
 			/// Iterate through the single bits of the n-th bitmap line
 			if (bitmap & (1 << (7-j))) {
-				framebuffer[cursor_loc] = color & 0xff;
-				framebuffer[cursor_loc+1] = (color >> 0x8) & 0xff;
-				framebuffer[cursor_loc+2] = (color >> 0xf) & 0xff;
+				buffer[cursor_loc] = color & 0xff;
+				buffer[cursor_loc+1] = (color >> 0x8) & 0xff;
+				buffer[cursor_loc+2] = (color >> 0xf) & 0xff;
 			}
 			/// Add the length of a single pixel to the cursor, so it won't overwrite the already drawn pixel
 			cursor_loc += (bpp/8);
@@ -137,4 +145,22 @@ void fb_set_color(uint8_t r, uint8_t g, uint8_t b)
 	color |= r << 16;
 	color |= g << 8;
 	color |= b;
+}
+
+void fb_activate_double_buffering()
+{
+	buffering_active = true;
+
+	double_buffer = kmalloc(fb_length_in_bytes);
+
+	buffer = double_buffer;
+
+	memcpy(double_buffer, framebuffer, fb_length_in_bytes);
+}
+
+void fb_flush()
+{
+	if (buffering_active) {
+		memcpy(framebuffer, double_buffer, fb_length_in_bytes);
+	}
 }
