@@ -8,3 +8,4 @@ toolchain/cross/*
 /limine
 /echfs
 .vscode/*
+/kernel/symbols.map

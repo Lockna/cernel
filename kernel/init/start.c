@@ -13,6 +13,7 @@
 #include <stivale/stivale.h>
 #include <cernel/drivers/fb/framebuffer.h>
 #include <debug/debug.h>
+#include <debug/symbols.h>
 #include <cernel/init/gdt.h>
 #include <cernel/init/idt.h>
 #include <cernel/lib/print.h>
@@ -95,6 +96,9 @@ void _start(struct stivale_struct *stivale_struct)
 
     fb_activate_double_buffering();
     kprintf("activated double buffering\n");
+
+    load_debug_symbols((struct stivale_module *)stivale_struct->modules, stivale_struct->module_count);
+    kprintf("loaded debug symbols\n");
 
 	acpi_init((struct RSDPDescriptor *)stivale_struct->rsdp);
 	kprintf("acpi_init done\n");

@@ -73,13 +73,6 @@ void print_int64(int64_t num, int width, void (*putc_ptr)(char c));
 char *int64_to_ascii_dec(char *output, int64_t num);
 
 /**
- *  @brief calculates the length of a string
- *  @param str pointer to a string
- *  @return length of the specified string
- */
-int strlen(char *str);
-
-/**
  *  @brief writes a string to putc_ptr
  *  @param ouput string which should get printed
  *  @param width minimal length of the output

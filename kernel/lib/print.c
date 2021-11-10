@@ -8,6 +8,7 @@
  */
 
 #include <cernel/lib/print.h>
+#include <cernel/lib/string.h>
 #include <cernel/drivers/fb/framebuffer.h>
 #include <stdint.h>
 
@@ -305,18 +306,6 @@ void print_rgb(uint8_t r, uint8_t g, uint8_t b, char *format, ...)
 
 	// Restoring framebuffer color from temporary variable
 	fb_set_color((temp_color >> 16) & 0xff, (temp_color >> 8) & 0Xff, temp_color & 0xff);
-}
-
-int strlen(char *str)
-{
-	int ret = 0;
-	
-	while(*str != '\0') {
-		ret++;
-		str++;
-	}
-
-	return ret;
 }
 
 int isDigit(char ch)

@@ -27,6 +27,7 @@ else
 endif
 
 KERNEL_HDD = cernel.hdd
+NM = ./toolchain/cross/bin/x86_64-elf-nm
 
 .PHONY: drun run compile clean all toolchain cleanToolchain
 
@@ -46,6 +47,7 @@ ifdef IS_MACOS
 	mkdir pack
 	mkdir pack/boot
 	cp kernel/cernel.elf pack/
+	cp kernel/symbols.map pack/
 	cp limine.cfg pack/boot/
 	cp ./limine/limine.sys pack/boot/
 	cp ./limine/limine-cd.bin pack/boot/
@@ -57,13 +59,15 @@ else
 	parted -s $(KERNEL_HDD) mkpart primary 2048s 100%
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import kernel/cernel.elf cernel.elf
+	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import kernel/symbols.map symbols.map
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
 	./echfs/echfs-utils -g -p0 $(KERNEL_HDD) import limine/limine.sys limine.sys
 endif
 	./limine/limine-install $(KERNEL_HDD)
 
 compile:
-	make -C kernel	
+	make -C kernel
+	$(NM) kernel/cernel.elf | grep " T " | cut -d' ' -f 1,3 > kernel/symbols.map
 
 clean:
 	rm -f $(KERNEL_HDD)
