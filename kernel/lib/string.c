@@ -1,5 +1,6 @@
 #include <cernel/lib/string.h>
 #include <cernel/lib/print.h>
+#include <cernel/interrupt/panic.h>
 #include <limits.h>
 #include <stddef.h>
 
@@ -118,6 +119,7 @@ int64_t strtol(nptr, endptr, base)
 	} else if (!any) {
 noconv:
         // do something to report error here
+        generic_panic("strtol invalid base");
 	} else if (neg)
 		acc = -(long)acc;
 	if (endptr != NULL)
