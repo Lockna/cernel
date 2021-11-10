@@ -25,13 +25,6 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c));
  */
 void kprintf(char *format, ...);
 
-/**
- *  @brief checks whether a char is a digit
- *  @param ch the char to check
- *  @return 1 if the char is digit, otherwise 0
- */
-int isDigit(char ch);
-
 /*
  * @brief prints a number as binary
  * @param num the number which gets printed as binary

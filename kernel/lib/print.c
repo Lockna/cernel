@@ -41,7 +41,7 @@ void intern_printf(char *format, va_list args, void (*putc_ptr)(char c))
 			// check if width is specified and set it
 			int width = 0;
 			
-			while (isDigit(*format) && *format != '\0') {
+			while (isdigit(*format) && *format != '\0') {
 				width *= 10;
 				width += (*format) - '0';
 				format++;
@@ -306,9 +306,4 @@ void print_rgb(uint8_t r, uint8_t g, uint8_t b, char *format, ...)
 
 	// Restoring framebuffer color from temporary variable
 	fb_set_color((temp_color >> 16) & 0xff, (temp_color >> 8) & 0Xff, temp_color & 0xff);
-}
-
-int isDigit(char ch)
-{
-	return ch >= '0' && ch <= '9';
 }
