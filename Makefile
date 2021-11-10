@@ -4,9 +4,11 @@ IS_WSL := $(shell uname -a | grep -i 'Microsoft')
 IS_MACOS := $(shell uname -a | grep -i 'Darwin')
 
 ifdef IS_MACOS
+	NM = x86_64-elf-nm
 	DD_FLAGS = bs=1m count=0 seek=64
 	XORRISO_FLAGS = -as mkisofs -b /boot/limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot /boot/limine-eltorito-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label pack 
 else
+	NM = ./toolchain/cross/bin/x86_64-elf-nm
 	DD_FLAGS = bs=1M count=0 seek=64
 endif
 
@@ -27,7 +29,6 @@ else
 endif
 
 KERNEL_HDD = cernel.hdd
-NM = ./toolchain/cross/bin/x86_64-elf-nm
 
 .PHONY: drun run compile clean all toolchain cleanToolchain
 
