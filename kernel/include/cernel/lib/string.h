@@ -11,7 +11,7 @@ uint64_t strlen(char *str);
 
 int64_t strcmp(char *s1, char *s2);
 
-int64_t strtol(const char *nptr, char **endptr, int base);
+uint64_t strtol(const char *nptr, char **endptr, int base);
 
 /**
  *  @brief checks whether a char is a digit

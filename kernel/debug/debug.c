@@ -8,6 +8,7 @@
  */
 
 #include <debug/debug.h>
+#include <debug/symbols.h>
 #include <cernel/lib/print.h>
 #include <stdarg.h>
 
@@ -22,11 +23,18 @@ void print_stacktrace(uint64_t rip_value, uint64_t rbp_value) {
 
 	uint64_t *rbp = (uint64_t*)rbp_value;
 
-	kprintf("    %p\n", rip_value);
+	uint64_t address = rip_value;
+	uint64_t offset = 0;
+	const char *symbol_name = get_symbol_name(address, &offset);
+
+	kprintf("    %p <%s+%u>\n", address, symbol_name, offset);
 
 	while (*rbp != 0) {
 		// print the saved rip
-		kprintf("    %p\n", *(rbp + 1));
+		address = *(rbp + 1);
+		symbol_name = get_symbol_name(address, &offset);
+
+		kprintf("    %p <%s+%u>\n", address, symbol_name, offset);
 		rbp = (uint64_t*)*rbp; // jump to previous stack frame
 	}
 

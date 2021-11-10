@@ -33,7 +33,7 @@ int64_t strcmp(char *s1, char *s2)
     return 0;
 }
 
-int64_t strtol(nptr, endptr, base)
+uint64_t strtol(nptr, endptr, base)
 	const char * nptr;
 	char ** endptr;
 	int base;
@@ -114,7 +114,8 @@ int64_t strtol(nptr, endptr, base)
 		}
 	}
 	if (any < 0) {
-		acc = neg ? LONG_MIN : LONG_MAX;
+        // TODO: after the hack in symbols.c is removed, this can be uncommented and the return type should be set to int64_t
+		//acc = neg ? LONG_MIN : LONG_MAX;
 
 	} else if (!any) {
 noconv:

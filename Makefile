@@ -68,7 +68,7 @@ endif
 
 compile:
 	make -C kernel
-	$(NM) kernel/cernel.elf | grep " T " | cut -d' ' -f 1,3 > kernel/symbols.map
+	$(NM) kernel/cernel.elf | grep " T " | cut -d' ' -f 1,3 | sort > kernel/symbols.map
 
 clean:
 	rm -f $(KERNEL_HDD)
