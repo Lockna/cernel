@@ -13,7 +13,7 @@ ASMFLAGS = -felf64
 
 # add options for debug build here
 ifeq ($(MODE),debug)
-	CFLAGS += -g -Ddebug -fno-omit-frame-pointer -fno-inline-functions
+	CFLAGS += -g -Ddebug -fno-omit-frame-pointer -fno-inline-functions  -fsanitize=undefined
 	ASMFLAGS += -g -Ddebug
 endif
 
