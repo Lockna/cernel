@@ -80,7 +80,6 @@ const char* get_symbol_name(uint64_t address, uint64_t *offset)
     }
     
     for (int i = 0; i < symbols_count; i++) {
-        dbg_printf("%x == %x\n", address, function_symbols[i].address);
         if (address < function_symbols[i].address) {      
             i--;
             *offset = address - function_symbols[i].address;
