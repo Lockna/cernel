@@ -67,6 +67,21 @@ void putc(char c)
 		return;
 	}
 
+	if (c == '\t') {
+		puts("    ");
+		return;
+	}
+
+	/// In our implementation \r deletes the whole lin, maybe reworked later
+	if (c == '\r') {
+		cursor_loc -= cursor_loc % pitch;
+
+		for (uint32_t i = 1; i  <= pitch*16; i++) {
+			buffer[cursor_loc + i] = 0x0;
+		}
+		return;
+	}
+	
 	if (char_per_line == char_current_line) {
 		char_current_line = 0;
 		cursor_loc -= cursor_loc % pitch;
