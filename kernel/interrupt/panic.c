@@ -71,9 +71,14 @@ void panic(cpu_register_state_t *state, char *error_message) {
 }
 
 __attribute__((noreturn))
-void generic_panic(char *error_message) {
-    cpu_register_state_t regs;
-    dump_register_state(&regs);
+void __generic_panic(const char *error_message, const char *file, int line) {
+  // cpu_register_state_t regs;
+  // dump_register_state(&regs);
 
-    panic(&regs, error_message);
+  kprintf("%s:%d KERNEL PANIC - %s\n", file, line, error_message);
+
+  while(1) {
+      // Halt the CPU
+      asm volatile("cli; hlt");
+  }
 }

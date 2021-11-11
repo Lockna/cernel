@@ -26,4 +26,6 @@ void panic(cpu_register_state_t *state, char *error_message);
  *  @param error_message A message that will be shown on screen
  */
 __attribute__((noreturn))
-void generic_panic(char *error_message);
+void __generic_panic(const char *error_message, const char *file, int line);
+
+#define generic_panic(msg) __generic_panic(#msg, __FILE__, __LINE__);
