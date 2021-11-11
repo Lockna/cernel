@@ -75,6 +75,10 @@ void alloc_init() {
 
 void *kmalloc(size_t size) {
 
+    // align size to 16 bytes
+    size &= ~15;
+    size += 16;
+
     if (size == 0)
         return NULL;
 
