@@ -7,7 +7,7 @@
  */
 
 #include <stdint.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 
 #define STACK_CHK_GUARD 0x12345678
 

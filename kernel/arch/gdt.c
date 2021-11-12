@@ -6,7 +6,7 @@
  *  The functions  are used to create an appropriate gdt and initialises it with correct values
  */
 
-#include <cernel/init/gdt.h>
+#include <cernel/arch/gdt.h>
 
 struct GDT gdt;
 struct gdt_ptr gdt_pointer;

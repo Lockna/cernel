@@ -9,7 +9,7 @@
  *  like the interrupt number or error code. Represents the stackframe when interrupt is hit
  */
 
-#include <cernel/init/idt.h>
+#include <cernel/arch/idt.h>
 
 
 /**

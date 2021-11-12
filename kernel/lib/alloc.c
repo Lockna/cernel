@@ -5,7 +5,7 @@
 #include <cernel/mm/pmm.h>
 #include <cernel/mm/vmm.h>
 #include <cernel/lib/print.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 #include <debug/debug.h>
 
 void *heap_end;

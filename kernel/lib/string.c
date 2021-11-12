@@ -1,6 +1,6 @@
 #include <cernel/lib/string.h>
 #include <cernel/lib/print.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 #include <limits.h>
 #include <stddef.h>
 

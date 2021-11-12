@@ -3,11 +3,11 @@
  *	@brief Handling interrupts
  */
 
-#include <cernel/interrupt/handler.h>
-#include <cernel/init/idt.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/arch/handler.h>
+#include <cernel/arch/idt.h>
+#include <cernel/sys/panic.h>
 #include <cernel/lib/print.h>
-#include <cernel/interrupt/apic.h>
+#include <cernel/arch/apic.h>
 #include <debug/debug.h>
 
 char* err_message[] = {

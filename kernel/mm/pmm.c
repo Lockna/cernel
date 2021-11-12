@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <cernel/lib/memory.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 #include <cernel/lib/print.h>
 
 #define USABLE_RAM 1

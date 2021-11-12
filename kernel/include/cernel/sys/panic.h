@@ -11,7 +11,7 @@
  */
 
 
-#include <cernel/interrupt/handler.h>
+#include <cernel/arch/handler.h>
 
 /**
  *  @brief Dumbs the registers to screen and then halt execution

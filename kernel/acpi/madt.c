@@ -1,5 +1,5 @@
 #include <cernel/acpi/madt.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 #include <cernel/lib/print.h>
 #include <cernel/lib/alloc.h>
 

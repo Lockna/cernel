@@ -6,7 +6,7 @@
  *  The functions  are used to create an appropriate gdt and initialises it with correct values
  */
 
-#include <cernel/init/idt.h>
+#include <cernel/arch/idt.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <cernel/drivers/fb/framebuffer.h>

@@ -3,8 +3,8 @@
 #include <cernel/lib/alloc.h>
 #include <cernel/lib/memory.h>
 #include <cernel/lib/print.h>
-#include <cernel/interrupt/panic.h>
 #include <debug/debug.h>
+#include <cernel/sys/panic.h>
 
 char *symbols_file = NULL;
 

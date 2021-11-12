@@ -6,8 +6,8 @@
  *  the registers to screen and halts the cpu.
  */
 
-#include <cernel/interrupt/panic.h>
-#include <cernel/interrupt/handler.h>
+#include <cernel/sys/panic.h>
+#include <cernel/arch/handler.h>
 #include <cernel/lib/print.h>
 #include <cernel/mm/vmm.h>
 

@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <cernel/lib/print.h>
-#include <cernel/interrupt/panic.h>
+#include <cernel/sys/panic.h>
 
 const char *type_check_kinds[] = {
     "load of", "store to", "reference binding to", "member access within",

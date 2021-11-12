@@ -6,7 +6,7 @@
  *  Later on there are lapics that will handle the IRQ's of the core the lapic belongs to
  */
 
-#include <cernel/interrupt/apic.h>
+#include <cernel/arch/apic.h>
 #include <cernel/acpi/madt.h>
 #include <cernel/mm/vmm.h>
 #include <cernel/lib/print.h>
