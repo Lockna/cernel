@@ -39,9 +39,17 @@ void print_location(struct source_location *location)
     kprintf("%s:%u:%u\n", location->filename, location->line, location->column);
 }
 
-void __ubsan_handle_shift_out_of_bounds(struct shift_out_ouf_bounds_data *data, void *lhs, void *rhs)
+void __ubsan_handle_shift_out_of_bounds(struct shift_out_ouf_bounds_data *data, void *lhs_raw, void *rhs_raw)
 {
+    // Remove unused parameter warning with this
+    uintptr_t lhs = (uintptr_t) lhs_raw;
+	uintptr_t rhs = (uintptr_t) rhs_raw;
+	(void) lhs;
+	(void) rhs;
+
     print_location(&data->loc);
+    kprintf("lhs: %d:%d:%c", data->lhs->type_kind, data->lhs->type_info, data->lhs->type_name);
+    kprintf("lhs: %d:%d:%c", data->rhs->type_kind, data->rhs->type_info, data->rhs->type_name);
     generic_panic("shift out of bounds\n");    
 }
 
