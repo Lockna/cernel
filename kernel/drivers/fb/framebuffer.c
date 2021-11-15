@@ -57,6 +57,20 @@ void putc(char c)
 {	
 	uint16_t index = 0;
 
+	if (cursor_loc >= fb_length_in_bytes-pitch*17) {
+		cursor_loc -= 17*pitch;
+  		// for (int line = 17; line < height; line++) {
+    	// 	for (int x = 0; x < width; x++) {
+      	// 		(buffer)[(line-17) * (pitch / 4) + x] = (buffer)[line * (pitch/4) + x];
+    	// 	}
+  		// }
+		memcpy(buffer, buffer + pitch*17, fb_length_in_bytes - pitch*17);
+
+  		for (size_t i = 0; i < pitch*16; i++) {
+    		buffer[cursor_loc + i] = 0x0;
+  		}
+	}
+
 	if (c == '\n') {
 		/// Subtracts the offset from the left edge, so the char is at the beginning of the line
 		cursor_loc -= cursor_loc % pitch;
