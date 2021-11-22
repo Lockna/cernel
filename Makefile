@@ -30,9 +30,11 @@ endif
 
 KERNEL_HDD = cernel.hdd
 
-.PHONY: drun run compile clean all toolchain cleanToolchain
+.PHONY: crun drun run compile clean all toolchain cleanToolchain
 
 all: $(KERNEL_HDD)
+
+crun: $(KERNEL_HDD) run
 
 run:
 	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -d int -no-reboot -no-shutdown
