@@ -9,7 +9,7 @@
 #define HEAP_BASE 0x0000100000000000
 
 // value that is placed between two allocations, two detect an overflow
-#define HEAP_COOKIE 0xeafcad080425e991
+#define HEAP_COOKIE 0x123456789ABCDEF
 
 // start size of the heap
 #define HEAP_START_SIZE (PAGE_SIZE * 0x10)
