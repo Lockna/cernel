@@ -37,10 +37,10 @@ all: $(KERNEL_HDD)
 crun: $(KERNEL_HDD) run
 
 run:
-	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -d int -no-reboot -no-shutdown
+	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -no-reboot -no-shutdown
 
 drun:
-	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -s -S -d int -no-shutdown
+	$(QEMU) -m 1G -debugcon stdio -drive file=$(KERNEL_HDD),format=raw -s -S -no-shutdown
 
 $(KERNEL_HDD): compile
 	rm -f $(KERNEL_HDD)
