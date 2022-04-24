@@ -23,6 +23,13 @@ void lapic_init()
 				  outb %al, $0x21	\n");
 
 	lapic_enable();
+	// set Task Priority Register
+	lapic_write(0x80, 0);
+
+	// test apic timer
+	lapic_write(0x320, 32 | ((uint32_t)1 << 17));
+	lapic_write(0x3e0, 0x3);
+	lapic_write(0x380, 0xffffff);
 }
 
 void lapic_enable()

@@ -98,5 +98,7 @@ service_interrupt:
 	pop rbx
 	pop rax
 
+	sti
+
 	add rsp, 16
 	iretq

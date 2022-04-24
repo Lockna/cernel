@@ -82,6 +82,8 @@ void _start(struct stivale_struct *stivale_struct)
     kprintf("Loading IDT...");
     idt_init();
     kprintf("Finished initializing and loading the idt\n");
+    // enable interrupts after loading idt
+    asm("sti");
 	
     kprintf("Initializing the physical memory allocator...");
     

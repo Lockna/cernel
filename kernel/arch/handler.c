@@ -48,15 +48,20 @@ char* err_message[] = {
 
 void handle_interrupt(interrupt_context_t *irq_context)
 {
-    print_stacktrace(irq_context->rip, irq_context->regs.rbp);
-
 	// check which interrupt happened and handle it
 	// default: print info and panic
     switch (irq_context->int_no) {
 		case 255:
 			// spurious interrupt
 			break;
-		default:
+        case 32:
+            // timer interrupt
+            lapic_eoi();
+            kprintf("timer interrupt\n");
+            break;
+        default:
+            print_stacktrace(irq_context->rip, irq_context->regs.rbp);
+
 			kprintf("error code:%d\n", irq_context->err);
 			kprintf("RIP: %x\n", irq_context->rip);
 			kprintf("RSP: %x\n", irq_context->rsp);
